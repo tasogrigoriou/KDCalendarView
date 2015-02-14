@@ -7,21 +7,61 @@
 //
 
 #import "ViewController.h"
+#import "KDCalendarViewController.h"
+#import "KDCalendarDelegate.h"
 
-@interface ViewController ()
+@interface ViewController () <KDCalendarDelegate>
+
+// weak so as to be added through vc containment
+@property (nonatomic, weak) KDCalendarViewController* calendarViewController;
+
+@property (nonatomic, strong) NSDateFormatter* formatter;
+
+
+@property (nonatomic, weak) IBOutlet UILabel* selectedDayLabel;
+@property (nonatomic, weak) IBOutlet UILabel* monthDisplayedDayLabel;
 
 @end
 
 @implementation ViewController
 
-- (void)viewDidLoad {
+- (void)viewDidLoad
+{
     [super viewDidLoad];
-    // Do any additional setup after loading the view, typically from a nib.
+    
+    self.formatter = [[NSDateFormatter alloc] init];
+    
+    [self.formatter setDateStyle:NSDateFormatterMediumStyle];
+    [self.formatter setTimeStyle:NSDateFormatterNoStyle];
 }
 
-- (void)didReceiveMemoryWarning {
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
+- (void) prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
+{
+    if([segue.identifier isEqualToString:@"KDCalendarViewContainment"])
+    {
+        self.calendarViewController = (KDCalendarViewController*)segue.destinationViewController;
+        [self addChildViewController:self.calendarViewController];
+        
+        self.calendarViewController.delegate = self;
+    }
+}
+
+
+#pragma mark - KDCalendarDelegate
+
+-(void)calendarController:(KDCalendarViewController*)calendarViewController didSelectDay:(NSDate*)date
+{
+    
+    
+    self.selectedDayLabel.text = [self.formatter stringFromDate:date];
+    
+}
+
+-(void)calendarController:(KDCalendarViewController*)calendarViewController didScrollToMonth:(NSDate*)date
+{
+    
+    
+    self.monthDisplayedDayLabel.text = [self.formatter stringFromDate:date];
 }
 
 @end

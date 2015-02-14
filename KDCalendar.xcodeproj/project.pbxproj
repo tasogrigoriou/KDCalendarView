@@ -52,6 +52,7 @@
 		BE82A78D1A8F78040018B62A /* KDCalendarHeaderCollectionReusableView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KDCalendarHeaderCollectionReusableView.m; sourceTree = "<group>"; };
 		BE82A78F1A8F79940018B62A /* KDCalendarViewDayCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KDCalendarViewDayCell.h; sourceTree = "<group>"; };
 		BE82A7901A8F79940018B62A /* KDCalendarViewDayCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KDCalendarViewDayCell.m; sourceTree = "<group>"; };
+		BE82A7921A8FAEC50018B62A /* KDCalendarDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KDCalendarDelegate.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -151,6 +152,7 @@
 		BE82A78B1A8F77020018B62A /* protocols */ = {
 			isa = PBXGroup;
 			children = (
+				BE82A7921A8FAEC50018B62A /* KDCalendarDelegate.h */,
 			);
 			name = protocols;
 			sourceTree = "<group>";
@@ -452,6 +454,7 @@
 				BE82A77D1A8F70730018B62A /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		BE82A77E1A8F70730018B62A /* Build configuration list for PBXNativeTarget "KDCalendarTests" */ = {
 			isa = XCConfigurationList;
@@ -460,6 +463,7 @@
 				BE82A7801A8F70730018B62A /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

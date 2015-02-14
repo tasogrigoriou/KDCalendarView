@@ -8,8 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import "KDCalendarViewMonthCell.h"
-
-@protocol KDCalendarDelegate;
+#import "KDCalendarDelegate.h"
 
 @interface KDCalendarViewController : UIViewController
 
@@ -25,21 +24,5 @@
 @end
 
 
-@protocol KDCalendarDelegate <NSObject>
 
-@optional
--(void)calendarController:(KDCalendarViewController*)calendarViewController didSelectDay:(NSDate*)date;
--(void)calendarController:(KDCalendarViewController*)calendarViewController didScrollToMonth:(NSDate*)date;
 
-/* YES by default */
--(BOOL)calendarController:(KDCalendarViewController*)calendarViewController canSelectDate:(NSDate*)date;
-
-@end
-
-@protocol KDCalendarDataSource <NSObject>
-
-@optional
--(NSDate*)fromDate;
--(NSDate*)toDate;
-
-@end

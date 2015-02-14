@@ -27,7 +27,7 @@
         {
             UILabel* dayLabel = [[UILabel alloc] initWithFrame:CGRectMake(xpos, 0.0f, lwidth, lheight)];
             dayLabel.backgroundColor = [UIColor clearColor];
-            dayLabel.textColor = [UIColor lightGrayColor];
+            dayLabel.textColor = [UIColor whiteColor];
             dayLabel.font = [UIFont fontWithName:@"Helvetica" size:12.0f];
             dayLabel.textAlignment = NSTextAlignmentCenter;
             dayLabel.text = (NSString*)dayNames[i];

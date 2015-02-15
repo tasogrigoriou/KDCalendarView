@@ -31,11 +31,13 @@
         
         CGFloat headerHeight = [KDCalendarHeaderCollectionReusableView height];
         
+        
         UICollectionViewFlowLayout* flowLayout = [[UICollectionViewFlowLayout alloc] init];
-        flowLayout.itemSize = CGSizeMake(frame.size.width / 7.0, (frame.size.height - headerHeight) / 6.0f);
+        flowLayout.itemSize = CGSizeMake(floor(frame.size.width / 7.0), (frame.size.height - headerHeight) / 6.0f);
         flowLayout.scrollDirection = UICollectionViewScrollDirectionVertical;
         flowLayout.minimumLineSpacing = 0.0f;
         flowLayout.minimumInteritemSpacing = 0.0f;
+        flowLayout.sectionInset = UIEdgeInsetsZero;
         
         flowLayout.headerReferenceSize = CGSizeMake(frame.size.width, headerHeight);
         flowLayout.footerReferenceSize = CGSizeZero;

@@ -10,8 +10,8 @@
 
 @interface KDCalendarViewDayCell : UICollectionViewCell
 {
-    UIView* _circleMarkView;
-    UILabel* _todayLabel;
+    UIView* _selectedMarkView;
+    UIView* _todayMarkView;
 }
 
 @property (nonatomic, strong) UILabel* label;

@@ -33,6 +33,8 @@
     
     [self.formatter setDateStyle:NSDateFormatterMediumStyle];
     [self.formatter setTimeStyle:NSDateFormatterNoStyle];
+    
+    self.selectedDayLabel.text = @"No date selected";
 }
 
 - (void) prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
@@ -51,9 +53,16 @@
 
 -(void)calendarController:(KDCalendarViewController*)calendarViewController didSelectDay:(NSDate*)date
 {
+    if(!date)
+    {
+        self.selectedDayLabel.text = @"No date selected";
+    }
+    else
+    {
+        self.selectedDayLabel.text = [self.formatter stringFromDate:date];
+    }
     
     
-    self.selectedDayLabel.text = [self.formatter stringFromDate:date];
     
 }
 

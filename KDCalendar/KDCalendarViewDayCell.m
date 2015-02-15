@@ -38,31 +38,28 @@
         
         labelFrame = self.label.frame;
         
-        _todayLabel = [[UILabel alloc] initWithFrame:CGRectZero]; // set through size that fits as it is static text
-        _todayLabel.textAlignment = NSTextAlignmentCenter;
-        _todayLabel.font = font;
-        _todayLabel.backgroundColor = [UIColor clearColor];
-        _todayLabel.textColor = [UIColor brownColor];
+        // This marks the selected day with a circle
         
-        _todayLabel.text = NSLocalizedString(@"Today", nil);
-        [_todayLabel sizeToFit];
+        _selectedMarkView = [[UIView alloc] initWithFrame:CGRectInset(labelFrame, 3.0f, 3.0f)];
+        _selectedMarkView.clipsToBounds = YES;
+        _selectedMarkView.layer.cornerRadius = _selectedMarkView.frame.size.width * 0.5f;
+        _selectedMarkView.backgroundColor = [UIColor brownColor];
         
-        _todayLabel.center = CGPointMake(self.label.center.x, self.label.center.y + labelFrame.size.height * 0.5 - 6.0f);
-        
-        
-        _todayLabel.hidden = YES;
-        
-        
-        _circleMarkView = [[UIView alloc] initWithFrame:CGRectInset(labelFrame, 3.0f, 3.0f)];
-        _circleMarkView.clipsToBounds = YES;
-        _circleMarkView.layer.cornerRadius = _circleMarkView.frame.size.width * 0.5f;
-        _circleMarkView.backgroundColor = [UIColor brownColor];
-        
-        [self addSubview:_circleMarkView];
+        [self addSubview:_selectedMarkView];
         [self addSubview:self.label];
-        [self addSubview:_todayLabel];
         
-        self.isDaySelected = NO;
+        
+        // This marks the day as being today
+        
+        
+        _todayMarkView = [[UIView alloc] initWithFrame:CGRectMake(0.0f, self.frame.size.height - 12.0f, 7.0f, 7.0f)];
+        _todayMarkView.center = CGPointMake(self.bounds.size.width * 0.5 + 1.0f, _todayMarkView.center.y);
+        _todayMarkView.backgroundColor = [UIColor redColor];
+        _todayMarkView.layer.cornerRadius = _todayMarkView.frame.size.width * 0.5f;
+        
+        [self addSubview:_todayMarkView];
+        
+        self.isDaySelected = NO;;
         
         UIView* separatorView = [[UIView alloc] initWithFrame:CGRectMake(0.0f, frame.size.height - 1.0f, frame.size.width, 1.0f)];
         separatorView.backgroundColor = [UIColor lightGrayColor];
@@ -109,11 +106,11 @@
     
     if (_isToday)
     {
-        _todayLabel.hidden = NO;
+        _todayMarkView.hidden = NO;
     }
     else
     {
-        _todayLabel.hidden = YES;
+        _todayMarkView.hidden = YES;
     }
 }
 
@@ -125,8 +122,8 @@
     if (isDaySelected)
     {
         
-        _circleMarkView.hidden = NO;
-        _todayLabel.hidden = YES;
+        _selectedMarkView.hidden = NO;
+        _todayMarkView.hidden = YES;
         
         self.label.textColor = [UIColor whiteColor];
         
@@ -136,7 +133,7 @@
     {
         self.label.textColor = [UIColor darkGrayColor];
         
-        _circleMarkView.hidden = YES;
+        _selectedMarkView.hidden = YES;
         
         self.isToday = _isToday; // * Pass value to call setter which defines the opacity of the Today label
         

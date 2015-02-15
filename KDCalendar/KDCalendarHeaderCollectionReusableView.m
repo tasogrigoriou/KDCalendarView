@@ -17,25 +17,28 @@
         
         self.backgroundColor = [UIColor lightGrayColor];
         
-        // day labels
+        // Day labels
         CGFloat xpos = 0.0f;
         CGFloat lwidth = frame.size.width / 7.0f;
         CGFloat lheight = frame.size.height;
-        NSArray* dayNames = @[@"SU", @"MO", @"TU", @"WE", @"TH", @"FR", @"SA"];
         
-        for (int i = 0; i < 7; i++)
+        NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+        
+        for (NSString* weekday in dateFormatter.weekdaySymbols)
         {
+            
             UILabel* dayLabel = [[UILabel alloc] initWithFrame:CGRectMake(xpos, 0.0f, lwidth, lheight)];
             dayLabel.backgroundColor = [UIColor clearColor];
             dayLabel.textColor = [UIColor whiteColor];
             dayLabel.font = [UIFont fontWithName:@"Helvetica" size:12.0f];
             dayLabel.textAlignment = NSTextAlignmentCenter;
-            dayLabel.text = (NSString*)dayNames[i];
+            dayLabel.text = [weekday substringToIndex:2].uppercaseString;
             [self addSubview:dayLabel];
             
             xpos += lwidth;
             
         }
+        
         
     }
     return self;

@@ -14,9 +14,9 @@
 		BE82A7691A8F70730018B62A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BE82A7681A8F70730018B62A /* Images.xcassets */; };
 		BE82A76C1A8F70730018B62A /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = BE82A76A1A8F70730018B62A /* LaunchScreen.xib */; };
 		BE82A7781A8F70730018B62A /* KDCalendarTests.m in Sources */ = {isa = PBXBuildFile; fileRef = BE82A7771A8F70730018B62A /* KDCalendarTests.m */; };
-		BE82A7871A8F759D0018B62A /* KDCalendarViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BE82A7861A8F759D0018B62A /* KDCalendarViewController.m */; };
+		BE82A7871A8F759D0018B62A /* KDCalendarView.m in Sources */ = {isa = PBXBuildFile; fileRef = BE82A7861A8F759D0018B62A /* KDCalendarView.m */; };
 		BE82A78A1A8F76470018B62A /* KDCalendarViewMonthCell.m in Sources */ = {isa = PBXBuildFile; fileRef = BE82A7891A8F76470018B62A /* KDCalendarViewMonthCell.m */; };
-		BE82A78E1A8F78040018B62A /* KDCalendarHeaderCollectionReusableView.m in Sources */ = {isa = PBXBuildFile; fileRef = BE82A78D1A8F78040018B62A /* KDCalendarHeaderCollectionReusableView.m */; };
+		BE82A78E1A8F78040018B62A /* KDCalendarHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = BE82A78D1A8F78040018B62A /* KDCalendarHeaderView.m */; };
 		BE82A7911A8F79940018B62A /* KDCalendarViewDayCell.m in Sources */ = {isa = PBXBuildFile; fileRef = BE82A7901A8F79940018B62A /* KDCalendarViewDayCell.m */; };
 /* End PBXBuildFile section */
 
@@ -44,15 +44,14 @@
 		BE82A7711A8F70730018B62A /* KDCalendarTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = KDCalendarTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		BE82A7761A8F70730018B62A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		BE82A7771A8F70730018B62A /* KDCalendarTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = KDCalendarTests.m; sourceTree = "<group>"; };
-		BE82A7851A8F759D0018B62A /* KDCalendarViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KDCalendarViewController.h; sourceTree = "<group>"; };
-		BE82A7861A8F759D0018B62A /* KDCalendarViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KDCalendarViewController.m; sourceTree = "<group>"; };
+		BE82A7851A8F759D0018B62A /* KDCalendarView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KDCalendarView.h; sourceTree = "<group>"; };
+		BE82A7861A8F759D0018B62A /* KDCalendarView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KDCalendarView.m; sourceTree = "<group>"; };
 		BE82A7881A8F76470018B62A /* KDCalendarViewMonthCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KDCalendarViewMonthCell.h; sourceTree = "<group>"; };
 		BE82A7891A8F76470018B62A /* KDCalendarViewMonthCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KDCalendarViewMonthCell.m; sourceTree = "<group>"; };
-		BE82A78C1A8F78030018B62A /* KDCalendarHeaderCollectionReusableView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KDCalendarHeaderCollectionReusableView.h; sourceTree = "<group>"; };
-		BE82A78D1A8F78040018B62A /* KDCalendarHeaderCollectionReusableView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KDCalendarHeaderCollectionReusableView.m; sourceTree = "<group>"; };
+		BE82A78C1A8F78030018B62A /* KDCalendarHeaderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KDCalendarHeaderView.h; sourceTree = "<group>"; };
+		BE82A78D1A8F78040018B62A /* KDCalendarHeaderView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KDCalendarHeaderView.m; sourceTree = "<group>"; };
 		BE82A78F1A8F79940018B62A /* KDCalendarViewDayCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KDCalendarViewDayCell.h; sourceTree = "<group>"; };
 		BE82A7901A8F79940018B62A /* KDCalendarViewDayCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KDCalendarViewDayCell.m; sourceTree = "<group>"; };
-		BE82A7921A8FAEC50018B62A /* KDCalendarDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KDCalendarDelegate.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -137,12 +136,12 @@
 		BE82A7811A8F70830018B62A /* KDCalendar */ = {
 			isa = PBXGroup;
 			children = (
-				BE82A7851A8F759D0018B62A /* KDCalendarViewController.h */,
-				BE82A7861A8F759D0018B62A /* KDCalendarViewController.m */,
+				BE82A78C1A8F78030018B62A /* KDCalendarHeaderView.h */,
+				BE82A78D1A8F78040018B62A /* KDCalendarHeaderView.m */,
+				BE82A7851A8F759D0018B62A /* KDCalendarView.h */,
+				BE82A7861A8F759D0018B62A /* KDCalendarView.m */,
 				BE82A7881A8F76470018B62A /* KDCalendarViewMonthCell.h */,
 				BE82A7891A8F76470018B62A /* KDCalendarViewMonthCell.m */,
-				BE82A78C1A8F78030018B62A /* KDCalendarHeaderCollectionReusableView.h */,
-				BE82A78D1A8F78040018B62A /* KDCalendarHeaderCollectionReusableView.m */,
 				BE82A78F1A8F79940018B62A /* KDCalendarViewDayCell.h */,
 				BE82A7901A8F79940018B62A /* KDCalendarViewDayCell.m */,
 			);
@@ -152,7 +151,6 @@
 		BE82A78B1A8F77020018B62A /* protocols */ = {
 			isa = PBXGroup;
 			children = (
-				BE82A7921A8FAEC50018B62A /* KDCalendarDelegate.h */,
 			);
 			name = protocols;
 			sourceTree = "<group>";
@@ -259,9 +257,9 @@
 			files = (
 				BE82A7641A8F70730018B62A /* ViewController.m in Sources */,
 				BE82A7911A8F79940018B62A /* KDCalendarViewDayCell.m in Sources */,
-				BE82A78E1A8F78040018B62A /* KDCalendarHeaderCollectionReusableView.m in Sources */,
+				BE82A78E1A8F78040018B62A /* KDCalendarHeaderView.m in Sources */,
 				BE82A78A1A8F76470018B62A /* KDCalendarViewMonthCell.m in Sources */,
-				BE82A7871A8F759D0018B62A /* KDCalendarViewController.m in Sources */,
+				BE82A7871A8F759D0018B62A /* KDCalendarView.m in Sources */,
 				BE82A7611A8F70730018B62A /* AppDelegate.m in Sources */,
 				BE82A75E1A8F70730018B62A /* main.m in Sources */,
 			);

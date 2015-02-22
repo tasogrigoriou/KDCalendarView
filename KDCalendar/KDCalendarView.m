@@ -6,12 +6,14 @@
 //  Copyright (c) 2015 karmadust. All rights reserved.
 //
 
-#import "KDCalendarViewController.h"
+#import "KDCalendarView.h"
 #import "KDCalendarViewDayCell.h"
 
-@interface KDCalendarViewController () <UICollectionViewDataSource, UICollectionViewDelegate>
+@interface KDCalendarView () <UICollectionViewDataSource, UICollectionViewDelegate>
 {
     NSCalendar *_calendar;
+    NSDate *_startDateCache;
+    NSDate *_endDateCache;
 }
 
 @property (nonatomic, readonly) KDCalendarViewMonthCell* currentMonthCell;
@@ -20,9 +22,9 @@
 
 @end
 
-@implementation KDCalendarViewController
+@implementation KDCalendarView
 
--(id)init
+-(id)initWithFrame:(CGRect)frame
 {
     if (self = [super init])
     {
@@ -42,21 +44,19 @@
     
     _calendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSCalendarIdentifierGregorian];
     
-    
-}
-
-- (void)viewDidLoad
-{
-    
-    [super viewDidLoad];
-    
-    
     // Create Collection View and add it to the View
     
     UICollectionViewFlowLayout *flowLayout = [[UICollectionViewFlowLayout alloc] init];
     flowLayout.scrollDirection = UICollectionViewScrollDirectionHorizontal;
     
-    self.collectionView = [[UICollectionView alloc] initWithFrame:CGRectZero
+    flowLayout.itemSize = self.frame.size;
+    flowLayout.minimumInteritemSpacing = 0.0f;
+    flowLayout.minimumLineSpacing = 0.0f;
+    
+    CGRect sFrame = self.frame;
+    sFrame.origin = CGPointZero;
+    
+    self.collectionView = [[UICollectionView alloc] initWithFrame:sFrame
                                              collectionViewLayout:flowLayout];
     
     self.collectionView.pagingEnabled = YES;
@@ -70,43 +70,60 @@
     self.collectionView.dataSource = self;
     self.collectionView.delegate = self;
     
-    self.view.backgroundColor = [UIColor clearColor];
+    self.backgroundColor = [UIColor clearColor];
     
     [self.collectionView registerClass:[KDCalendarViewMonthCell class]
             forCellWithReuseIdentifier:NSStringFromClass([KDCalendarViewMonthCell class])];
     
     
-    [self.view addSubview:self.collectionView];
+    [self addSubview:self.collectionView];
+    
+    
+    
 }
 
 
--(void)viewDidLayoutSubviews
-{
-    
-    [super viewDidLayoutSubviews];
-    
-    UICollectionViewFlowLayout *flowLayout = (UICollectionViewFlowLayout*)self.collectionView.collectionViewLayout;
-    flowLayout.itemSize = self.view.frame.size;
-    flowLayout.minimumInteritemSpacing = 0.0f;
-    flowLayout.minimumLineSpacing = 0.0f;
-    
-    self.collectionView.collectionViewLayout = flowLayout;
-    
-    
-    self.collectionView.frame = CGRectMake(0.0f, 0.0f, self.view.frame.size.width, self.view.frame.size.height);
-    
-}
 
 #pragma mark - UICollectionViewDataSource
 
 - (NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView
 {
-    return 1;
+    if(self.dataSource)
+    {
+        _startDateCache = self.dataSource.startDate;
+        
+        // complaining about undeclared selector
+        #pragma GCC diagnostic ignored "-Wundeclared-selector"
+        if([self.dataSource respondsToSelector:@selector(endDate:)])
+        {
+            _endDateCache = self.dataSource.endDate;
+        }
+        
+    }
+    
+    // If the method did not return nil we can have a calendar
+    return _startDateCache ? 1 : 0;
 }
 
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section
 {
-    return 12; // * Default, a year...
+    
+    if(_endDateCache)
+    {
+        return [_calendar components:NSCalendarUnitMonth
+                            fromDate:_startDateCache
+                              toDate:_endDateCache
+                             options:0].month;
+        
+
+    }
+    else
+    {
+        // note: INT32_MAX is because NSInteger is mapped to long rather than long long it can still be 32bits on old architecture
+        return INT32_MAX;
+    }
+    
+    
 }
 
 
@@ -123,7 +140,7 @@
     offsetComponents.month = indexPath.item;
     
     monthCell.displayMonthDate = [_calendar dateByAddingComponents:offsetComponents
-                                                            toDate:[NSDate date]
+                                                            toDate:_startDateCache
                                                            options:0];
     
     monthCell.delegate = self;
@@ -243,11 +260,7 @@
     
 }
 
-- (void) setDateSelected:(NSDate *)dateSelected
-{
-    
-    [self setDateSelected:dateSelected animated:NO];
-}
+
 
 -(KDCalendarViewMonthCell*)monthCellForMonthIndex:(NSInteger)index
 {
@@ -284,6 +297,28 @@
     CGFloat pageNumberRoundedDown = floor( self.collectionView.contentOffset.x / monthCellWidth );
     
     return (KDCalendarViewMonthCell*)[self.collectionView cellForItemAtIndexPath:[NSIndexPath indexPathForItem:pageNumberRoundedDown inSection:0]];
+    
+}
+
+#pragma mark - Accessors
+
+- (void) setDateSelected:(NSDate *)dateSelected
+{
+    
+    [self setDateSelected:dateSelected animated:NO];
+}
+
+
+
+-(void) setDataSource:(id<KDCalendarDataSource>)dataSource
+{
+    _dataSource = dataSource;
+    
+    // if the view has already been presented, refresh with the new dataSource
+    if(self.superview)
+    {
+        [self.collectionView reloadData];
+    }
     
 }
 

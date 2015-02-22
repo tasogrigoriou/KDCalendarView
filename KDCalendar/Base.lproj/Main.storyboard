@@ -16,54 +16,54 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
-                            <containerView opaque="NO" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="XSr-yP-sIx">
-                                <rect key="frame" x="56" y="28" width="302" height="302"/>
-                                <connections>
-                                    <segue destination="vF0-FN-RLo" kind="embed" identifier="KDCalendarViewContainment" id="aPz-Li-zsl"/>
-                                </connections>
-                            </containerView>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0Wo-Xf-oIx" userLabel="Selected Day Label">
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0Wo-Xf-oIx" userLabel="Selected Day Label">
                                 <rect key="frame" x="56" y="385" width="302" height="21"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="302" id="j1e-uz-SBD"/>
+                                    <constraint firstAttribute="height" constant="21" id="qt6-kF-7wH"/>
+                                </constraints>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dQa-db-sGW" userLabel="Current Month Label">
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dQa-db-sGW" userLabel="Current Month Label">
                                 <rect key="frame" x="56" y="434" width="302" height="21"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="302" id="iz9-AY-BTZ"/>
+                                    <constraint firstAttribute="height" constant="21" id="mdZ-A0-d77"/>
+                                </constraints>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="t51-gK-ua8" customClass="KDCalendarView">
+                                <rect key="frame" x="56" y="45" width="302" height="302"/>
+                                <color key="backgroundColor" red="0.91400911873417667" green="0.90612226658808837" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="302" id="1Gm-Bc-quH"/>
+                                    <constraint firstAttribute="width" constant="302" id="Qth-GK-hJc"/>
+                                </constraints>
+                            </view>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="0Wo-Xf-oIx" firstAttribute="top" secondItem="t51-gK-ua8" secondAttribute="bottom" constant="38" id="9A5-Nv-bNe"/>
+                            <constraint firstItem="dQa-db-sGW" firstAttribute="leading" secondItem="t51-gK-ua8" secondAttribute="leading" id="AIN-nJ-1VI"/>
+                            <constraint firstItem="dQa-db-sGW" firstAttribute="top" secondItem="0Wo-Xf-oIx" secondAttribute="bottom" constant="28" id="hLM-KO-SFm"/>
+                            <constraint firstItem="0Wo-Xf-oIx" firstAttribute="leading" secondItem="t51-gK-ua8" secondAttribute="leading" id="q9P-Mb-7bi"/>
+                            <constraint firstItem="t51-gK-ua8" firstAttribute="top" secondItem="jyV-Pf-zRb" secondAttribute="bottom" constant="25" id="uqs-ed-fWD"/>
+                            <constraint firstAttribute="centerX" secondItem="t51-gK-ua8" secondAttribute="centerX" id="urr-Ig-WIU"/>
+                        </constraints>
                     </view>
                     <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina55"/>
                     <connections>
+                        <outlet property="calendarView" destination="t51-gK-ua8" id="Hc0-Cv-3DF"/>
                         <outlet property="monthDisplayedDayLabel" destination="dQa-db-sGW" id="dvH-M7-mlJ"/>
                         <outlet property="selectedDayLabel" destination="0Wo-Xf-oIx" id="ILO-hW-J6N"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="x5A-6p-PRh" sceneMemberID="firstResponder"/>
             </objects>
-        </scene>
-        <!--Calendar View Controller-->
-        <scene sceneID="tee-Gr-DH1">
-            <objects>
-                <viewController automaticallyAdjustsScrollViewInsets="NO" id="vF0-FN-RLo" customClass="KDCalendarViewController" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="BXZ-7i-7mt"/>
-                        <viewControllerLayoutGuide type="bottom" id="Y64-0g-OiP"/>
-                    </layoutGuides>
-                    <view key="view" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" id="dha-tj-wxV">
-                        <rect key="frame" x="0.0" y="0.0" width="302" height="302"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                    </view>
-                    <toolbarItems/>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="4OC-Qm-FCC" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="344" y="-225"/>
         </scene>
     </scenes>
 </document>

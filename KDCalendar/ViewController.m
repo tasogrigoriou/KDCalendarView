@@ -7,13 +7,12 @@
 //
 
 #import "ViewController.h"
-#import "KDCalendarViewController.h"
-#import "KDCalendarDelegate.h"
+#import "KDCalendarView.h"
 
-@interface ViewController () <KDCalendarDelegate>
+@interface ViewController () <KDCalendarDelegate, KDCalendarDataSource>
 
-// weak so as to be added through vc containment
-@property (nonatomic, weak) KDCalendarViewController* calendarViewController;
+
+@property (nonatomic, weak) IBOutlet KDCalendarView* calendarView;
 
 @property (nonatomic, strong) NSDateFormatter* formatter;
 
@@ -34,28 +33,43 @@
     [self.formatter setDateStyle:NSDateFormatterMediumStyle];
     [self.formatter setTimeStyle:NSDateFormatterNoStyle];
     
-    self.selectedDayLabel.text = @"No date selected";
+    self.selectedDayLabel.text = NSLocalizedString(@"No date selected", nil);
+    
+    self.calendarView.delegate = self;
+    self.calendarView.dataSource = self;
 }
 
-- (void) prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
+
+
+#pragma mark - KDCalendarDataSource
+
+
+-(NSDate*)startDate
 {
-    if([segue.identifier isEqualToString:@"KDCalendarViewContainment"])
-    {
-        self.calendarViewController = (KDCalendarViewController*)segue.destinationViewController;
-        [self addChildViewController:self.calendarViewController];
-        
-        self.calendarViewController.delegate = self;
-    }
+    return [NSDate date];
 }
 
+
+-(NSDate*)endDate
+{
+    NSDateComponents *offsetDateComponents = [[NSDateComponents alloc] init];
+    
+    offsetDateComponents.year = 1;
+    
+    NSDate *yearLaterDate = [[NSCalendar currentCalendar]dateByAddingComponents:offsetDateComponents
+                                                                   toDate:[NSDate date]
+                                                                  options:0];
+    
+    return yearLaterDate;
+}
 
 #pragma mark - KDCalendarDelegate
 
--(void)calendarController:(KDCalendarViewController*)calendarViewController didSelectDay:(NSDate*)date
+-(void)calendarController:(KDCalendarView*)calendarViewController didSelectDay:(NSDate*)date
 {
     if(!date)
     {
-        self.selectedDayLabel.text = @"No date selected";
+        self.selectedDayLabel.text = NSLocalizedString(@"No date selected", nil);
     }
     else
     {
@@ -63,10 +77,9 @@
     }
     
     
-    
 }
 
--(void)calendarController:(KDCalendarViewController*)calendarViewController didScrollToMonth:(NSDate*)date
+-(void)calendarController:(KDCalendarView*)calendarViewController didScrollToMonth:(NSDate*)date
 {
     
     

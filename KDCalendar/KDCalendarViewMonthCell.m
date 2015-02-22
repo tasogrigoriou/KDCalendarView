@@ -7,7 +7,7 @@
 //
 
 #import "KDCalendarViewMonthCell.h"
-#import "KDCalendarHeaderCollectionReusableView.h"
+#import "KDCalendarHeaderView.h"
 #import "KDCalendarViewDayCell.h"
 
 @interface KDCalendarViewMonthCell () <UICollectionViewDataSource, UICollectionViewDelegate>
@@ -29,7 +29,7 @@
     self = [super initWithFrame:frame];
     if (self) {
         
-        CGFloat headerHeight = [KDCalendarHeaderCollectionReusableView height];
+        CGFloat headerHeight = [KDCalendarHeaderView height];
         
         
         UICollectionViewFlowLayout* flowLayout = [[UICollectionViewFlowLayout alloc] init];
@@ -60,9 +60,9 @@
         [self.collectionView registerClass:[KDCalendarViewDayCell class]
                 forCellWithReuseIdentifier:NSStringFromClass([KDCalendarViewDayCell class])];
         
-        [self.collectionView registerClass:[KDCalendarHeaderCollectionReusableView class]
+        [self.collectionView registerClass:[KDCalendarHeaderView class]
                 forSupplementaryViewOfKind:UICollectionElementKindSectionHeader
-                       withReuseIdentifier:NSStringFromClass([KDCalendarHeaderCollectionReusableView class])];
+                       withReuseIdentifier:NSStringFromClass([KDCalendarHeaderView class])];
         
         
         
@@ -104,8 +104,8 @@
     if(kind == UICollectionElementKindSectionHeader)
     {
         
-        KDCalendarHeaderCollectionReusableView* headerView = (KDCalendarHeaderCollectionReusableView*)[collectionView dequeueReusableSupplementaryViewOfKind:UICollectionElementKindSectionHeader
-                                                                                                       withReuseIdentifier:NSStringFromClass([KDCalendarHeaderCollectionReusableView class])
+        KDCalendarHeaderView* headerView = (KDCalendarHeaderView*)[collectionView dequeueReusableSupplementaryViewOfKind:UICollectionElementKindSectionHeader
+                                                                                                       withReuseIdentifier:NSStringFromClass([KDCalendarHeaderView class])
                                                                                                               forIndexPath:indexPath];
         
         

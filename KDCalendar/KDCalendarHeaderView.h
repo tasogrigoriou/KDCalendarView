@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface KDCalendarHeaderCollectionReusableView : UICollectionReusableView
+@interface KDCalendarHeaderView : UICollectionReusableView
 
 + (CGFloat) height;
 

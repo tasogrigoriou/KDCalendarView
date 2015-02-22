@@ -6,9 +6,9 @@
 //  Copyright (c) 2015 karmadust. All rights reserved.
 //
 
-#import "KDCalendarHeaderCollectionReusableView.h"
+#import "KDCalendarHeaderView.h"
 
-@implementation KDCalendarHeaderCollectionReusableView
+@implementation KDCalendarHeaderView
 
 -(id)initWithFrame:(CGRect)frame
 {

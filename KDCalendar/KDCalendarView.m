@@ -9,6 +9,8 @@
 #import "KDCalendarView.h"
 #import "KDCalendarViewDayCell.h"
 
+#define DEFAULT_NUMBER_OF_MONTHS 24
+
 @interface KDCalendarView () <UICollectionViewDataSource, UICollectionViewDelegate>
 {
     NSCalendar *_calendar;
@@ -90,14 +92,18 @@
 {
     if(self.dataSource)
     {
+        
+        
         _startDateCache = self.dataSource.startDate;
         
         // complaining about undeclared selector
         #pragma GCC diagnostic ignored "-Wundeclared-selector"
-        if([self.dataSource respondsToSelector:@selector(endDate:)])
+        if([self.dataSource respondsToSelector:@selector(endDate)])
         {
             _endDateCache = self.dataSource.endDate;
         }
+        
+        
         
     }
     
@@ -119,8 +125,9 @@
     }
     else
     {
-        // note: INT32_MAX is because NSInteger is mapped to long rather than long long it can still be 32bits on old architecture
-        return INT32_MAX;
+        // note: Setting it to large numbers like INT_MAX will result in a lot of overhead while launching the view
+        // this is due to [UICollectionViewFlowLayout _getSizingInfos] running for all cells at launch
+        return DEFAULT_NUMBER_OF_MONTHS;
     }
     
     

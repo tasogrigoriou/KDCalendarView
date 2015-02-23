@@ -9,7 +9,8 @@ Basic Implementation of a Calendar
 ### Basic Use
 
 ```sh
-KDCalendarView* calendarView = [[KDCalendarView alloc] initWithFrame:CGRectMake(0.0, 0.0, 200.0, 200.0)] 
+CGRect frame = CGRectMake(0.0, 0.0, 200.0, 200.0);
+KDCalendarView* calendarView = [[KDCalendarView alloc] initWithFrame:frame];
 calendarView.delegate = self;
 calendarView.dataSource = self;
 [self.view addSubview:calendarView]

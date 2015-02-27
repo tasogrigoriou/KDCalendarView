@@ -30,13 +30,15 @@
     
     self.formatter = [[NSDateFormatter alloc] init];
     
-    [self.formatter setDateStyle:NSDateFormatterMediumStyle];
-    [self.formatter setTimeStyle:NSDateFormatterNoStyle];
+    
     
     self.selectedDayLabel.text = NSLocalizedString(@"No date selected", nil);
     
     self.calendarView.delegate = self;
     self.calendarView.dataSource = self;
+    
+    self.calendarView.layer.borderWidth = 1.0;
+    self.calendarView.layer.borderColor = [UIColor colorWithWhite:0.8 alpha:1.0].CGColor;
 }
 
 
@@ -69,10 +71,13 @@
 {
     if(!date)
     {
-        self.selectedDayLabel.text = NSLocalizedString(@"No date selected", nil);
+        self.selectedDayLabel.text = NSLocalizedString(@"No Date Selected.", nil);
     }
     else
     {
+        [self.formatter setDateStyle:NSDateFormatterMediumStyle];
+        [self.formatter setTimeStyle:NSDateFormatterNoStyle];
+        
         self.selectedDayLabel.text = [self.formatter stringFromDate:date];
     }
     
@@ -81,7 +86,7 @@
 
 -(void)calendarController:(KDCalendarView*)calendarViewController didScrollToMonth:(NSDate*)date
 {
-    
+    [self.formatter setDateFormat:@"MMMM, yyyy"];
     
     self.monthDisplayedDayLabel.text = [self.formatter stringFromDate:date];
 }

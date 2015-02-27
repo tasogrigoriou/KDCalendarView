@@ -48,7 +48,17 @@
 
 -(NSDate*)startDate
 {
-    return [NSDate date];
+    
+    NSDateComponents *offsetDateComponents = [[NSDateComponents alloc] init];
+    
+    offsetDateComponents.month = -3;
+    
+    NSDate *threeMonthsBeforeDate = [[NSCalendar currentCalendar]dateByAddingComponents:offsetDateComponents
+                                                                                 toDate:[NSDate date]
+                                                                                options:0];
+    
+    
+    return threeMonthsBeforeDate;
 }
 
 
@@ -56,7 +66,8 @@
 {
     NSDateComponents *offsetDateComponents = [[NSDateComponents alloc] init];
     
-    offsetDateComponents.year = 1;
+    offsetDateComponents.year = 2;
+    offsetDateComponents.month = 3;
     
     NSDate *yearLaterDate = [[NSCalendar currentCalendar]dateByAddingComponents:offsetDateComponents
                                                                    toDate:[NSDate date]

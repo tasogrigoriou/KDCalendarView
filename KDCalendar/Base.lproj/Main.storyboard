@@ -44,13 +44,51 @@
                                 <color key="textColor" red="0.25323722375690605" green="0.25323722375690605" blue="0.25323722375690605" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="hI4-S1-WP2" userLabel="Bottom Container">
+                                <rect key="frame" x="0.0" y="569" width="414" height="107"/>
+                                <subviews>
+                                    <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="format: dd.mm.yyy, ex. 01.03.2003" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="6KX-nn-U2d">
+                                        <rect key="frame" x="56" y="39" width="302" height="30"/>
+                                        <color key="backgroundColor" red="0.96579333563535907" green="0.96579333563535907" blue="0.96579333563535907" alpha="1" colorSpace="calibratedRGB"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                        <textInputTraits key="textInputTraits"/>
+                                    </textField>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Pick a Date to Set" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Xtb-YI-lah" userLabel="Pick a Date">
+                                        <rect key="frame" x="56" y="0.0" width="302" height="23"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="23" id="9VG-eU-hSF"/>
+                                            <constraint firstAttribute="width" constant="302" id="mJ7-be-KUX"/>
+                                        </constraints>
+                                        <fontDescription key="fontDescription" name="Futura-Medium" family="Futura" pointSize="17"/>
+                                        <color key="textColor" red="0.2476907804" green="0.2476907804" blue="0.2476907804" alpha="1" colorSpace="calibratedRGB"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="jkF-B0-Pm4">
+                                        <rect key="frame" x="56" y="71" width="73" height="36"/>
+                                        <fontDescription key="fontDescription" name="Futura-Medium" family="Futura" pointSize="18"/>
+                                        <state key="normal" title="Select">
+                                            <color key="titleColor" red="0.55425587016574585" green="0.24647850547331879" blue="0.39845265097941113" alpha="1" colorSpace="calibratedRGB"/>
+                                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                        </state>
+                                    </button>
+                                </subviews>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstItem="Xtb-YI-lah" firstAttribute="top" secondItem="hI4-S1-WP2" secondAttribute="top" id="AIn-kC-tCb"/>
+                                    <constraint firstAttribute="height" constant="107" id="BhY-Ur-TYO"/>
+                                    <constraint firstAttribute="centerX" secondItem="Xtb-YI-lah" secondAttribute="centerX" id="arf-zH-Arm"/>
+                                </constraints>
+                            </view>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstItem="dQa-db-sGW" firstAttribute="trailing" secondItem="t51-gK-ua8" secondAttribute="trailing" id="1E6-3i-VUr"/>
                             <constraint firstItem="0Wo-Xf-oIx" firstAttribute="top" secondItem="t51-gK-ua8" secondAttribute="bottom" constant="18" id="9A5-Nv-bNe"/>
+                            <constraint firstAttribute="trailing" secondItem="hI4-S1-WP2" secondAttribute="trailing" id="Q7B-nJ-Q2m"/>
                             <constraint firstItem="dQa-db-sGW" firstAttribute="leading" secondItem="t51-gK-ua8" secondAttribute="leading" id="WMv-hh-uuH"/>
                             <constraint firstItem="dQa-db-sGW" firstAttribute="top" secondItem="kh9-bI-dsS" secondAttribute="topMargin" constant="61" id="eEJ-qI-Ld7"/>
+                            <constraint firstItem="2fi-mo-0CV" firstAttribute="top" secondItem="hI4-S1-WP2" secondAttribute="bottom" constant="60" id="fgK-te-enJ"/>
+                            <constraint firstItem="hI4-S1-WP2" firstAttribute="leading" secondItem="kh9-bI-dsS" secondAttribute="leading" id="lGb-qH-BYo"/>
                             <constraint firstItem="0Wo-Xf-oIx" firstAttribute="leading" secondItem="t51-gK-ua8" secondAttribute="leading" id="q9P-Mb-7bi"/>
                             <constraint firstItem="t51-gK-ua8" firstAttribute="top" secondItem="jyV-Pf-zRb" secondAttribute="bottom" constant="83" id="uqs-ed-fWD"/>
                             <constraint firstAttribute="centerX" secondItem="t51-gK-ua8" secondAttribute="centerX" id="urr-Ig-WIU"/>

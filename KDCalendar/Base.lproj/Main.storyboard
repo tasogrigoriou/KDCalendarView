@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6254" systemVersion="14C109" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="vXZ-lx-hvc">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6254" systemVersion="14B25" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="vXZ-lx-hvc">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6247"/>
     </dependencies>
@@ -16,28 +16,27 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0Wo-Xf-oIx" userLabel="Selected Day Label">
-                                <rect key="frame" x="56" y="385" width="302" height="21"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="[Day Selected Label]" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0Wo-Xf-oIx" userLabel="Selected Day Label">
+                                <rect key="frame" x="56" y="416" width="302" height="21"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="302" id="j1e-uz-SBD"/>
                                     <constraint firstAttribute="height" constant="21" id="qt6-kF-7wH"/>
                                 </constraints>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <fontDescription key="fontDescription" name="Futura-Medium" family="Futura" pointSize="17"/>
+                                <color key="textColor" red="0.24769078038674031" green="0.24769078038674031" blue="0.24769078038674031" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dQa-db-sGW" userLabel="Current Month Label">
-                                <rect key="frame" x="56" y="434" width="302" height="21"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="[Month Displayed Label]" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dQa-db-sGW" userLabel="Current Month Label">
+                                <rect key="frame" x="56" y="37" width="302" height="30"/>
                                 <constraints>
-                                    <constraint firstAttribute="width" constant="302" id="iz9-AY-BTZ"/>
-                                    <constraint firstAttribute="height" constant="21" id="mdZ-A0-d77"/>
+                                    <constraint firstAttribute="height" constant="30" id="CjZ-UX-Dle"/>
                                 </constraints>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <fontDescription key="fontDescription" name="Futura-Medium" family="Futura" pointSize="17"/>
+                                <color key="textColor" red="0.25323722375690605" green="0.25323722375690605" blue="0.25323722375690605" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="t51-gK-ua8" customClass="KDCalendarView">
-                                <rect key="frame" x="56" y="45" width="302" height="302"/>
+                                <rect key="frame" x="56" y="75" width="302" height="302"/>
                                 <color key="backgroundColor" red="0.91400911873417667" green="0.90612226658808837" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="302" id="1Gm-Bc-quH"/>
@@ -47,11 +46,12 @@
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstItem="0Wo-Xf-oIx" firstAttribute="top" secondItem="t51-gK-ua8" secondAttribute="bottom" constant="38" id="9A5-Nv-bNe"/>
-                            <constraint firstItem="dQa-db-sGW" firstAttribute="leading" secondItem="t51-gK-ua8" secondAttribute="leading" id="AIN-nJ-1VI"/>
-                            <constraint firstItem="dQa-db-sGW" firstAttribute="top" secondItem="0Wo-Xf-oIx" secondAttribute="bottom" constant="28" id="hLM-KO-SFm"/>
+                            <constraint firstItem="dQa-db-sGW" firstAttribute="trailing" secondItem="t51-gK-ua8" secondAttribute="trailing" id="2qE-IV-448"/>
+                            <constraint firstItem="0Wo-Xf-oIx" firstAttribute="top" secondItem="t51-gK-ua8" secondAttribute="bottom" constant="39" id="9A5-Nv-bNe"/>
+                            <constraint firstItem="dQa-db-sGW" firstAttribute="leading" secondItem="t51-gK-ua8" secondAttribute="leading" id="S7a-R7-30T"/>
+                            <constraint firstItem="dQa-db-sGW" firstAttribute="top" secondItem="jyV-Pf-zRb" secondAttribute="bottom" constant="17" id="hQ4-Xu-doC"/>
                             <constraint firstItem="0Wo-Xf-oIx" firstAttribute="leading" secondItem="t51-gK-ua8" secondAttribute="leading" id="q9P-Mb-7bi"/>
-                            <constraint firstItem="t51-gK-ua8" firstAttribute="top" secondItem="jyV-Pf-zRb" secondAttribute="bottom" constant="25" id="uqs-ed-fWD"/>
+                            <constraint firstItem="t51-gK-ua8" firstAttribute="top" secondItem="jyV-Pf-zRb" secondAttribute="bottom" constant="55" id="uqs-ed-fWD"/>
                             <constraint firstAttribute="centerX" secondItem="t51-gK-ua8" secondAttribute="centerX" id="urr-Ig-WIU"/>
                         </constraints>
                     </view>

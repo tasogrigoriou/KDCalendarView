@@ -19,6 +19,7 @@
 		BE82A78E1A8F78040018B62A /* KDCalendarHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = BE82A78D1A8F78040018B62A /* KDCalendarHeaderView.m */; };
 		BE82A7911A8F79940018B62A /* KDCalendarViewDayCell.m in Sources */ = {isa = PBXBuildFile; fileRef = BE82A7901A8F79940018B62A /* KDCalendarViewDayCell.m */; };
 		BEC3EB341AA8A75F006A179A /* KDMonthCollectionViewFlowLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = BEC3EB331AA8A75F006A179A /* KDMonthCollectionViewFlowLayout.m */; };
+		BEC3EB371AA8AB73006A179A /* KDCalendarLineReusableView.m in Sources */ = {isa = PBXBuildFile; fileRef = BEC3EB361AA8AB73006A179A /* KDCalendarLineReusableView.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -55,6 +56,8 @@
 		BE82A7901A8F79940018B62A /* KDCalendarViewDayCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KDCalendarViewDayCell.m; sourceTree = "<group>"; };
 		BEC3EB321AA8A75F006A179A /* KDMonthCollectionViewFlowLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KDMonthCollectionViewFlowLayout.h; sourceTree = "<group>"; };
 		BEC3EB331AA8A75F006A179A /* KDMonthCollectionViewFlowLayout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KDMonthCollectionViewFlowLayout.m; sourceTree = "<group>"; };
+		BEC3EB351AA8AB73006A179A /* KDCalendarLineReusableView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KDCalendarLineReusableView.h; sourceTree = "<group>"; };
+		BEC3EB361AA8AB73006A179A /* KDCalendarLineReusableView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KDCalendarLineReusableView.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -149,6 +152,8 @@
 				BE82A7901A8F79940018B62A /* KDCalendarViewDayCell.m */,
 				BEC3EB321AA8A75F006A179A /* KDMonthCollectionViewFlowLayout.h */,
 				BEC3EB331AA8A75F006A179A /* KDMonthCollectionViewFlowLayout.m */,
+				BEC3EB351AA8AB73006A179A /* KDCalendarLineReusableView.h */,
+				BEC3EB361AA8AB73006A179A /* KDCalendarLineReusableView.m */,
 			);
 			name = KDCalendar;
 			sourceTree = "<group>";
@@ -261,6 +266,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				BE82A7641A8F70730018B62A /* ViewController.m in Sources */,
+				BEC3EB371AA8AB73006A179A /* KDCalendarLineReusableView.m in Sources */,
 				BE82A7911A8F79940018B62A /* KDCalendarViewDayCell.m in Sources */,
 				BEC3EB341AA8A75F006A179A /* KDMonthCollectionViewFlowLayout.m in Sources */,
 				BE82A78E1A8F78040018B62A /* KDCalendarHeaderView.m in Sources */,

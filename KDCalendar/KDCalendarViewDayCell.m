@@ -61,10 +61,7 @@
         
         self.isDaySelected = NO;;
         
-        UIView* separatorView = [[UIView alloc] initWithFrame:CGRectMake(0.0f, frame.size.height - 1.0f, frame.size.width, 1.0f)];
-        separatorView.backgroundColor = [UIColor lightGrayColor];
         
-        [self addSubview:separatorView];
     }
     return self;
 }

@@ -9,6 +9,7 @@
 #import "KDCalendarViewMonthCell.h"
 #import "KDCalendarHeaderView.h"
 #import "KDCalendarViewDayCell.h"
+#import "KDMonthCollectionViewFlowLayout.h"
 
 @interface KDCalendarViewMonthCell () <UICollectionViewDataSource, UICollectionViewDelegate>
 {
@@ -29,23 +30,14 @@
     self = [super initWithFrame:frame];
     if (self) {
         
-        CGFloat headerHeight = [KDCalendarHeaderView height];
+    
         
-        
-        UICollectionViewFlowLayout* flowLayout = [[UICollectionViewFlowLayout alloc] init];
-        flowLayout.itemSize = CGSizeMake(floor(frame.size.width / 7.0), (frame.size.height - headerHeight) / 6.0f);
-        flowLayout.scrollDirection = UICollectionViewScrollDirectionVertical;
-        flowLayout.minimumLineSpacing = 0.0f;
-        flowLayout.minimumInteritemSpacing = 0.0f;
-        flowLayout.sectionInset = UIEdgeInsetsZero;
-        
-        flowLayout.headerReferenceSize = CGSizeMake(frame.size.width, headerHeight);
-        flowLayout.footerReferenceSize = CGSizeZero;
-        
+        KDMonthCollectionViewFlowLayout* monthFlowLayout = [[KDMonthCollectionViewFlowLayout alloc] initWithCollectionViewSize:frame.size
+                                                                                                               andHeaderHeight:[KDCalendarHeaderView height]];
         
         
         self.collectionView = [[UICollectionView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, frame.size.width, frame.size.height)
-                                                 collectionViewLayout:flowLayout];
+                                                 collectionViewLayout:monthFlowLayout];
         
         // delegate is the parent controller
         self.collectionView.dataSource = self;

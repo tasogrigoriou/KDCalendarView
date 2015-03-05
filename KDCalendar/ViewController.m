@@ -15,14 +15,16 @@
 @property (nonatomic, weak) IBOutlet KDCalendarView* calendarView;
 
 @property (nonatomic, strong) NSDateFormatter* formatter;
-@property (nonatomic, strong) NSDateFormatter* parser;
 
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *bottomConstaint;
 
-@property (nonatomic, weak) IBOutlet UILabel* selectedDayLabel;
 @property (nonatomic, weak) IBOutlet UILabel* monthDisplayedDayLabel;
 
 @property (nonatomic, weak) IBOutlet UITextField* inputTextField;
+
+@property (nonatomic, weak) IBOutlet UIView* overlayView;
+
+@property (nonatomic) CGFloat originalHeightOfConstaint;
 
 @end
 
@@ -33,18 +35,32 @@
     [super viewDidLoad];
     
     self.formatter = [[NSDateFormatter alloc] init];
-    self.parser = [[NSDateFormatter alloc] init];
     
-    self.parser.dateFormat = @"dd.MM.yyyy";
+    self.formatter.dateFormat = @"dd.MM.yyyy";
     
-    
-    self.selectedDayLabel.text = NSLocalizedString(@"No date selected", nil);
+    self.originalHeightOfConstaint = self.bottomConstaint.constant;
     
     self.calendarView.delegate = self;
     self.calendarView.dataSource = self;
     
     self.calendarView.layer.borderWidth = 1.0;
     self.calendarView.layer.borderColor = [UIColor colorWithWhite:0.8 alpha:1.0].CGColor;
+    
+    self.overlayView.userInteractionEnabled = NO;
+    
+    UITapGestureRecognizer* tapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self
+                                                                                           action:@selector(tapGestureOccured:)];
+    
+    [self.overlayView addGestureRecognizer:tapGestureRecognizer];
+    
+    self.overlayView.alpha = 0.0f;
+}
+
+- (void) tapGestureOccured:(UITapGestureRecognizer*)recognizer
+{
+    
+    
+    
 }
 
 - (void) viewDidAppear:(BOOL)animated
@@ -74,10 +90,13 @@
 - (void) keyboardFrameDidChange:(NSNotification*)notification
 {
     
+    
+    self.overlayView.userInteractionEnabled = (BOOL)(notification.name == UIKeyboardWillShowNotification);
+    
     UIViewAnimationCurve animationCurve = [[notification.userInfo objectForKey:UIKeyboardAnimationCurveUserInfoKey] integerValue];
     NSTimeInterval animationDuration = [[notification.userInfo objectForKey:UIKeyboardAnimationDurationUserInfoKey] integerValue];
     
-    self.bottomConstaint.constant = (notification.name == UIKeyboardWillShowNotification) ? 256.0 : 60.0;
+    self.bottomConstaint.constant = (notification.name == UIKeyboardWillShowNotification) ? 256.0 : self.originalHeightOfConstaint;
     [self.view setNeedsUpdateConstraints];
     
     [UIView beginAnimations:nil context:nil];
@@ -85,6 +104,8 @@
     [UIView setAnimationCurve:animationCurve];
     
     [self.view layoutIfNeeded];
+    
+    self.overlayView.alpha = (notification.name == UIKeyboardWillShowNotification) ? 1.0 : 0.0;
     
     [UIView commitAnimations];
 }
@@ -123,36 +144,7 @@
     return yearLaterDate;
 }
 
-#pragma mark - UITextFieldDelegate
 
-- (BOOL)textFieldShouldReturn:(UITextField *)textField
-{
-    self.inputTextField.text = @"";
-    [self.inputTextField resignFirstResponder];
-    
-    return YES;
-}
-
-- (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string
-{
-    
-    NSMutableString* mutableTextString = self.inputTextField.text.mutableCopy;
-    
-    [mutableTextString replaceCharactersInRange:range withString:string];
-    
-    if(range.length == 0) // we are adding a sinlge digit
-    {
-        if(range.location == 1 || range.location == 4)
-        {
-            [mutableTextString appendString:@"."];
-        }
-    }
-    
-    
-    self.inputTextField.text = mutableTextString;
-    
-    return NO;
-}
 
 #pragma mark - KDCalendarDelegate
 
@@ -160,14 +152,13 @@
 {
     if(!date)
     {
-        self.selectedDayLabel.text = NSLocalizedString(@"No Date Selected.", nil);
+        self.inputTextField.text = @"";
     }
     else
     {
-        [self.formatter setDateStyle:NSDateFormatterMediumStyle];
-        [self.formatter setTimeStyle:NSDateFormatterNoStyle];
         
-        self.selectedDayLabel.text = [self.formatter stringFromDate:date];
+        
+        self.inputTextField.text = [self.formatter stringFromDate:date];
     }
     
     
@@ -175,7 +166,7 @@
 - (IBAction)selectPressed:(UIButton *)sender {
     
     
-    NSDate* dateParsed = [self.parser dateFromString:self.inputTextField.text];
+    NSDate* dateParsed = [self.formatter dateFromString:self.inputTextField.text];
     if(!dateParsed)
     {
         [[[UIAlertView alloc] initWithTitle:@"Error Parsing Date"
@@ -201,6 +192,58 @@
     [self.formatter setDateFormat:@"MMMM, yyyy"];
     
     self.monthDisplayedDayLabel.text = [self.formatter stringFromDate:date];
+}
+
+
+
+#pragma mark - UITextFieldDelegate
+
+- (BOOL)textFieldShouldReturn:(UITextField *)textField
+{
+    self.inputTextField.text = @"";
+    [self.inputTextField resignFirstResponder];
+    
+    return YES;
+}
+
+
+- (void)textFieldDidBeginEditing:(UITextField *)textField
+{
+    self.inputTextField.text = @"";
+}
+
+- (void) textFieldDidEndEditing:(UITextField *)textField
+{
+    if(self.calendarView.dateSelected)
+    {
+        self.inputTextField.text = [self.formatter stringFromDate:self.calendarView.dateSelected];
+    }
+    else
+    {
+        self.inputTextField.text = @"";
+    }
+    
+}
+
+- (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string
+{
+    
+    NSMutableString* mutableTextString = self.inputTextField.text.mutableCopy;
+    
+    [mutableTextString replaceCharactersInRange:range withString:string];
+    
+    if(range.length == 0) // we are adding a sinlge digit
+    {
+        if(range.location == 1 || range.location == 4)
+        {
+            [mutableTextString appendString:@"."];
+        }
+    }
+    
+    
+    self.inputTextField.text = mutableTextString;
+    
+    return NO;
 }
 
 @end

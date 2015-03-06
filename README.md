@@ -18,6 +18,7 @@ The frame can be arbitrary and the component will morph to fit in the shape it i
 
 ### Data Source and Delegate
 The calendar will call on 2 interfaces. 
+
 **KDCalendarDataSource** needs to implement at least the first method that returns the start date. Feel free to set this at today as below:
 ```sh
 -(NSDate*)startDate {

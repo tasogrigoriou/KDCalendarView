@@ -241,6 +241,12 @@
     
 }
 
+-(void)setDateSelected:(NSDate *)dateSelected
+{
+    _dateSelected = dateSelected;
+    [self.collectionView reloadData];
+}
+
 -(NSString*)description
 {
     return [NSString stringWithFormat:@"<KDCalendarViewMonthCell %p (display:%@, date:%@)>", self, self.displayMonthDate, self.dateSelected];

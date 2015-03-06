@@ -277,9 +277,14 @@
     
     
     
-    self.monthDisplayed = dateSelected;
+    [self setMonthDisplayed:dateSelected animated:animated];
     
-    KDCalendarViewMonthCell* monthCell = [self monthCellForMonthIndex:[_calendar component:NSCalendarUnitMonth fromDate:dateSelected]];
+    NSInteger month = [_calendar components:NSCalendarUnitMonth
+                                   fromDate:_startDateCache
+                                     toDate:dateSelected
+                                    options:0].month;
+    
+    KDCalendarViewMonthCell* monthCell = [self monthCellForMonthIndex:month];
     
     monthCell.dateSelected = _dateSelected;
     

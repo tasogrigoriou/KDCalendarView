@@ -232,11 +232,12 @@
             return NO;
         }
         
-        if(range.location == 1 || range.location == 4)
+        if((range.location == 1 || range.location == 4) && range.location == self.inputTextField.text.length) // if we are appending at the end, help by putting the '.' dots
         {
             [mutableTextString appendString:@"."];
         }
     }
+    
     
     
     self.inputTextField.text = mutableTextString;

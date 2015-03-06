@@ -67,9 +67,11 @@
 - (void) tapGestureOccured:(UITapGestureRecognizer*)recognizer
 {
     
-    
+    [self.inputTextField resignFirstResponder];
     
 }
+
+
 
 
 - (void) viewDidAppear:(BOOL)animated
@@ -108,7 +110,12 @@
     UIViewAnimationCurve animationCurve = [[notification.userInfo objectForKey:UIKeyboardAnimationCurveUserInfoKey] integerValue];
     NSTimeInterval animationDuration = [[notification.userInfo objectForKey:UIKeyboardAnimationDurationUserInfoKey] integerValue];
     
-    self.bottomConstaint.constant = (notification.name == UIKeyboardWillShowNotification) ? 256.0 : self.originalHeightOfConstaint;
+    CGRect rawFrame = [[notification.userInfo objectForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue];
+    
+    CGRect keyboardFrame = [self.view convertRect:rawFrame fromView:nil];
+    
+    
+    self.bottomConstaint.constant = (notification.name == UIKeyboardWillShowNotification) ? keyboardFrame.size.height : self.originalHeightOfConstaint;
     [self.view setNeedsUpdateConstraints];
     
     [UIView beginAnimations:nil context:nil];

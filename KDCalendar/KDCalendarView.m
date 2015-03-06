@@ -86,8 +86,9 @@
     [self addSubview:self.collectionView];
     
     
-    
 }
+
+
 
 
 
@@ -176,7 +177,7 @@
 }
 
 
-#pragma mark - UICollectionViewDataSource
+#pragma mark - UICollectionViewDelegate
 
 
 

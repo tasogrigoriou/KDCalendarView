@@ -53,6 +53,8 @@
     
     [self.overlayView addGestureRecognizer:tapGestureRecognizer];
     
+    [self.view bringSubviewToFront:self.overlayView]; // Originally placed in the back so as not to obstruct the storyboard outlets.
+    
     self.overlayView.alpha = 0.0f;
 }
 
@@ -62,6 +64,7 @@
     
     
 }
+
 
 - (void) viewDidAppear:(BOOL)animated
 {
@@ -84,6 +87,9 @@
     [super viewWillDisappear:animated];
     
     [[NSNotificationCenter defaultCenter] removeObserver:self];
+    
+    
+    
 }
 
 
@@ -157,7 +163,6 @@
     else
     {
         
-        
         self.inputTextField.text = [self.formatter stringFromDate:date];
     }
     
@@ -189,9 +194,10 @@
 
 -(void)calendarController:(KDCalendarView*)calendarViewController didScrollToMonth:(NSDate*)date
 {
-    [self.formatter setDateFormat:@"MMMM, yyyy"];
     
-    self.monthDisplayedDayLabel.text = [self.formatter stringFromDate:date];
+    NSDateFormatter* headerFormatter = [[NSDateFormatter alloc] init];
+    headerFormatter.dateFormat = @"MMMM, yyyy";
+    self.monthDisplayedDayLabel.text = [headerFormatter stringFromDate:date];
 }
 
 
@@ -244,6 +250,32 @@
     self.inputTextField.text = mutableTextString;
     
     return NO;
+}
+
+#pragma mark - Stepping Months
+
+- (IBAction)nextMonthPressed:(id)sender
+{
+    [self stepMonthInCalendarByValue:1];
+}
+
+- (IBAction)previousMonthPressed:(id)sender
+{
+    [self stepMonthInCalendarByValue:-1];
+}
+
+- (void)stepMonthInCalendarByValue:(NSInteger)value
+{
+    
+    NSCalendar* calendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSCalendarIdentifierGregorian];
+    
+    NSDateComponents* oneMonthAheadDateComponents = [[NSDateComponents alloc] init];
+    oneMonthAheadDateComponents.month = value;
+    
+    NSDate* monthDisplayed = self.calendarView.monthDisplayed;
+    NSDate* oneMonthLaterDate = [calendar dateByAddingComponents:oneMonthAheadDateComponents toDate:monthDisplayed options:0];
+    
+    self.calendarView.monthDisplayed = oneMonthLaterDate;
 }
 
 @end

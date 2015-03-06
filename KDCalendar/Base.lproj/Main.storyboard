@@ -17,6 +17,10 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="xqh-0A-m7h" userLabel="Overlay View (Will Bring to Front)">
+                                <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
+                                <color key="backgroundColor" white="1" alpha="0.10000000000000001" colorSpace="calibratedWhite"/>
+                            </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="t51-gK-ua8" customClass="KDCalendarView">
                                 <rect key="frame" x="56" y="101" width="302" height="302"/>
                                 <color key="backgroundColor" red="0.91400911873417667" green="0.90612226658808837" blue="1" alpha="1" colorSpace="calibratedRGB"/>
@@ -34,12 +38,38 @@
                                 <color key="textColor" red="0.25323722375690605" green="0.25323722375690605" blue="0.25323722375690605" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="xqh-0A-m7h" userLabel="Overlay View">
-                                <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
-                                <color key="backgroundColor" white="1" alpha="0.10000000000000001" colorSpace="calibratedWhite"/>
-                            </view>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="igZ-QU-maX" userLabel="Previous Month">
+                                <rect key="frame" x="56" y="424" width="135" height="30"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="135" id="VEb-ww-6A8"/>
+                                    <constraint firstAttribute="height" constant="30" id="b21-sD-iKt"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" name="Futura-Medium" family="Futura" pointSize="15"/>
+                                <state key="normal" title="Previous Month">
+                                    <color key="titleColor" red="0.38522962707182318" green="0.38522962707182318" blue="0.38522962707182318" alpha="1" colorSpace="calibratedRGB"/>
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="previousMonthPressed:" destination="vXZ-lx-hvc" eventType="touchUpInside" id="068-QZ-fG4"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="right" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Yap-LD-S2L" userLabel="Previous Month">
+                                <rect key="frame" x="223" y="424" width="135" height="30"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="135" id="fN9-id-XJ6"/>
+                                    <constraint firstAttribute="height" constant="30" id="i80-cu-2DY"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" name="Futura-Medium" family="Futura" pointSize="15"/>
+                                <state key="normal" title="Next Month">
+                                    <color key="titleColor" red="0.38522962710000003" green="0.38522962710000003" blue="0.38522962710000003" alpha="1" colorSpace="calibratedRGB"/>
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="nextMonthPressed:" destination="vXZ-lx-hvc" eventType="touchUpInside" id="ydv-fE-KHT"/>
+                                </connections>
+                            </button>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="hI4-S1-WP2" userLabel="Bottom Container">
-                                <rect key="frame" x="0.0" y="504" width="414" height="118"/>
+                                <rect key="frame" x="0.0" y="588" width="414" height="118"/>
                                 <subviews>
                                     <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="format: dd.mm.yyyy, ex. 01.03.2003" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="6KX-nn-U2d">
                                         <rect key="frame" x="56" y="42" width="302" height="34"/>
@@ -116,12 +146,16 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstItem="dQa-db-sGW" firstAttribute="trailing" secondItem="t51-gK-ua8" secondAttribute="trailing" id="1E6-3i-VUr"/>
+                            <constraint firstItem="Yap-LD-S2L" firstAttribute="trailing" secondItem="t51-gK-ua8" secondAttribute="trailing" id="CVK-C7-VFP"/>
                             <constraint firstAttribute="trailing" secondItem="hI4-S1-WP2" secondAttribute="trailing" id="Q7B-nJ-Q2m"/>
+                            <constraint firstItem="igZ-QU-maX" firstAttribute="leading" secondItem="t51-gK-ua8" secondAttribute="leading" id="Qu6-WL-GFH"/>
                             <constraint firstItem="xqh-0A-m7h" firstAttribute="leading" secondItem="kh9-bI-dsS" secondAttribute="leading" id="S5S-3r-yzD"/>
+                            <constraint firstItem="Yap-LD-S2L" firstAttribute="top" secondItem="t51-gK-ua8" secondAttribute="bottom" constant="21" id="SFo-Q6-tPC"/>
                             <constraint firstItem="dQa-db-sGW" firstAttribute="leading" secondItem="t51-gK-ua8" secondAttribute="leading" id="WMv-hh-uuH"/>
                             <constraint firstItem="xqh-0A-m7h" firstAttribute="top" secondItem="kh9-bI-dsS" secondAttribute="top" id="aYF-pR-kIK"/>
                             <constraint firstItem="dQa-db-sGW" firstAttribute="top" secondItem="kh9-bI-dsS" secondAttribute="topMargin" constant="61" id="eEJ-qI-Ld7"/>
-                            <constraint firstItem="2fi-mo-0CV" firstAttribute="top" secondItem="hI4-S1-WP2" secondAttribute="bottom" constant="114" id="fgK-te-enJ"/>
+                            <constraint firstItem="2fi-mo-0CV" firstAttribute="top" secondItem="hI4-S1-WP2" secondAttribute="bottom" constant="30" id="fgK-te-enJ"/>
+                            <constraint firstItem="igZ-QU-maX" firstAttribute="top" secondItem="t51-gK-ua8" secondAttribute="bottom" constant="21" id="jfW-hi-9Ex"/>
                             <constraint firstItem="hI4-S1-WP2" firstAttribute="leading" secondItem="kh9-bI-dsS" secondAttribute="leading" id="lGb-qH-BYo"/>
                             <constraint firstAttribute="trailing" secondItem="xqh-0A-m7h" secondAttribute="trailing" id="qOd-0n-iDe"/>
                             <constraint firstItem="2fi-mo-0CV" firstAttribute="top" secondItem="xqh-0A-m7h" secondAttribute="bottom" id="r4D-Xa-YWs"/>

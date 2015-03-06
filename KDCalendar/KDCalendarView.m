@@ -16,6 +16,7 @@
     NSCalendar *_calendar;
     NSDate *_startDateCache;
     NSDate *_endDateCache;
+    BOOL _manualScroll;
 }
 
 @property (nonatomic, readonly) KDCalendarViewMonthCell* currentMonthCell;
@@ -25,6 +26,8 @@
 @end
 
 @implementation KDCalendarView
+
+@dynamic monthDisplayed;
 
 -(id)initWithFrame:(CGRect)frame
 {
@@ -114,8 +117,18 @@
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section
 {
     
+    if(self.delegate)
+    {
+        [self.delegate calendarController:self
+                         didScrollToMonth:self.dataSource.startDate];
+    }
+    
+    
     if(_endDateCache)
     {
+        
+        
+        
         return [_calendar components:NSCalendarUnitMonth
                             fromDate:_startDateCache
                               toDate:_endDateCache
@@ -221,6 +234,12 @@
 
 #pragma mark - UIScrollViewDelegate
 
+
+-(void)scrollViewDidEndScrollingAnimation:(UIScrollView *)scrollView
+{
+    [self scrollViewDidEndDecelerating:(UIScrollView*)self];
+}
+
 -(void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView
 {
     
@@ -268,35 +287,14 @@
 }
 
 
-
 -(KDCalendarViewMonthCell*)monthCellForMonthIndex:(NSInteger)index
 {
     NSIndexPath* indexPath = [NSIndexPath indexPathForItem:index inSection:0];
     return (KDCalendarViewMonthCell*)[self.collectionView cellForItemAtIndexPath:indexPath];
 }
 
--(NSInteger)monthIndex
-{
-    return (NSInteger)(self.collectionView.contentOffset.x / self.collectionView.frame.size.width);
-}
 
-- (NSDate*)monthDisplayed
-{
-    
-    if(CGRectIsEmpty(self.collectionView.frame))
-    {
-        return nil;
-    }
-    
-    NSDateComponents *offsetComponents = [[NSDateComponents alloc] init];
-    
-    // offset by a month
-    offsetComponents.month = self.monthIndex;
-    
-    return [_calendar dateByAddingComponents:offsetComponents
-                                      toDate:[NSDate date]
-                                     options:0];
-}
+
 
 -(KDCalendarViewMonthCell*)currentMonthCell
 {
@@ -307,7 +305,71 @@
     
 }
 
+
+
 #pragma mark - Accessors
+
+// This gets a visual reference from the calendar
+- (NSDate*)monthDisplayed
+{
+    
+    // not loaded with the correct frame
+    if(CGRectIsEmpty(self.collectionView.frame))
+    {
+        return nil;
+    }
+    
+    // the date has not been set
+    if(!_startDateCache)
+    {
+        return nil;
+    }
+    
+    NSDateComponents *offsetComponents = [[NSDateComponents alloc] init];
+    
+    // offset by a month
+    offsetComponents.month = (NSInteger)(self.collectionView.contentOffset.x / self.collectionView.frame.size.width);
+    
+
+    
+    return [_calendar dateByAddingComponents:offsetComponents toDate:_startDateCache options:0];
+}
+
+
+
+- (void) setMonthDisplayed:(NSDate *)monthDisplayed
+{
+    
+    if(!self.monthDisplayed)
+    {
+        return;
+    }
+    
+    
+    // check whether the date asked is indeed between two dates
+    if([monthDisplayed compare:_startDateCache] == NSOrderedAscending)
+    {
+        return;
+    }
+    else if (_endDateCache != nil && [monthDisplayed compare:_endDateCache] == NSOrderedDescending)
+    {
+        return;
+    }
+    
+    NSDateComponents* differenceComponents = [_calendar components:NSCalendarUnitMonth
+                                                          fromDate:_startDateCache
+                                                            toDate:monthDisplayed
+                                                           options:0];
+    
+    
+    CGRect rectToScroll = CGRectZero;
+    rectToScroll.size = self.collectionView.bounds.size;
+    rectToScroll.origin.x = differenceComponents.month * self.collectionView.bounds.size.width;
+    
+    _manualScroll = YES;
+    [self.collectionView scrollRectToVisible:rectToScroll
+                                    animated:YES];
+}
 
 - (void) setDateSelected:(NSDate *)dateSelected
 {

@@ -17,7 +17,7 @@
 
 
 @property (nonatomic, strong) NSDate* dateSelected;
-@property (nonatomic, readonly) NSDate* monthDisplayed;
+@property (nonatomic, strong) NSDate* monthDisplayed;
 
 @property (nonatomic, weak) id<KDCalendarDelegate> delegate;
 @property (nonatomic, weak) id<KDCalendarDataSource> dataSource;

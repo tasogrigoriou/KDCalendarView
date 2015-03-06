@@ -26,6 +26,8 @@
 
 @property (nonatomic) CGFloat originalHeightOfConstaint;
 
+@property (weak, nonatomic) IBOutlet UIView *bottomContainer;
+
 @end
 
 @implementation ViewController
@@ -52,8 +54,9 @@
                                                                                            action:@selector(tapGestureOccured:)];
     
     [self.overlayView addGestureRecognizer:tapGestureRecognizer];
-    
+   
     [self.view bringSubviewToFront:self.overlayView]; // Originally placed in the back so as not to obstruct the storyboard outlets.
+    [self.view bringSubviewToFront:self.bottomContainer];
     
     self.overlayView.alpha = 0.0f;
 }
@@ -168,29 +171,7 @@
     
     
 }
-- (IBAction)selectPressed:(UIButton *)sender {
-    
-    
-    NSDate* dateParsed = [self.formatter dateFromString:self.inputTextField.text];
-    if(!dateParsed)
-    {
-        [[[UIAlertView alloc] initWithTitle:@"Error Parsing Date"
-                                    message:@"The date you entered is not valid!"
-                                   delegate:self cancelButtonTitle:@"OK"
-                          otherButtonTitles: nil] show];
- 
-    }
-    else
-    {
-        
-        
-        [self.calendarView setDateSelected:dateParsed];
-        
-        [self textFieldShouldReturn:self.inputTextField];
-        
-       
-    }
-}
+
 
 -(void)calendarController:(KDCalendarView*)calendarViewController didScrollToMonth:(NSDate*)date
 {
@@ -240,6 +221,17 @@
     
     if(range.length == 0) // we are adding a sinlge digit
     {
+        NSCharacterSet* numericCharacterSet = [NSCharacterSet decimalDigitCharacterSet];
+        if ([string rangeOfCharacterFromSet:numericCharacterSet].location == NSNotFound)
+        {
+            return NO;
+        }
+        
+        if([string isEqualToString:@"."])
+        {
+            return NO;
+        }
+        
         if(range.location == 1 || range.location == 4)
         {
             [mutableTextString appendString:@"."];
@@ -252,7 +244,7 @@
     return NO;
 }
 
-#pragma mark - Stepping Months
+#pragma mark - Stepping Months and Selecting Dates
 
 - (IBAction)nextMonthPressed:(id)sender
 {
@@ -276,6 +268,31 @@
     NSDate* oneMonthLaterDate = [calendar dateByAddingComponents:oneMonthAheadDateComponents toDate:monthDisplayed options:0];
     
     self.calendarView.monthDisplayed = oneMonthLaterDate;
+}
+
+- (IBAction)selectPressed:(UIButton *)sender {
+    
+    
+    NSDate* dateParsed = [self.formatter dateFromString:self.inputTextField.text];
+    if(!dateParsed)
+    {
+        [[[UIAlertView alloc] initWithTitle:@"Error Parsing Date"
+                                    message:@"The date you entered is not valid!"
+                                   delegate:self cancelButtonTitle:@"OK"
+                          otherButtonTitles: nil] show];
+        
+    }
+    else
+    {
+        
+        
+        [self.calendarView setDateSelected:dateParsed
+                                  animated:YES];
+        
+        [self textFieldShouldReturn:self.inputTextField];
+        
+        
+    }
 }
 
 @end

@@ -23,6 +23,8 @@
 @property (nonatomic, readonly) NSInteger monthIndex;
 @property (nonatomic, strong) UICollectionView* collectionView;
 
+@property (nonatomic, readonly) NSUInteger cellDisplayedIndex;
+
 @end
 
 @implementation KDCalendarView
@@ -261,25 +263,23 @@
                 animated:(BOOL)animated
 {
     
+    // check whether the date asked is indeed between two dates
+    if([dateSelected compare:_startDateCache] == NSOrderedAscending)
+    {
+        return;
+    }
+    else if (_endDateCache != nil && [dateSelected compare:_endDateCache] == NSOrderedDescending)
+    {
+        return;
+    }
     
     _dateSelected = dateSelected;
     
     
-    NSDateComponents* components;
     
-    // how many months distance does today which is the first cell have with the selected date?
-    components = [_calendar components:NSCalendarUnitMonth
-                              fromDate:[NSDate date]
-                                toDate:dateSelected
-                               options:0];
+    self.monthDisplayed = dateSelected;
     
-    
-    
-    [self.collectionView setContentOffset:CGPointMake(self.collectionView.frame.size.width * components.month, 0.0f)
-                                 animated:animated];
-    
-    
-    KDCalendarViewMonthCell* monthCell = [self monthCellForMonthIndex:components.month];
+    KDCalendarViewMonthCell* monthCell = [self monthCellForMonthIndex:[_calendar component:NSCalendarUnitMonth fromDate:dateSelected]];
     
     monthCell.dateSelected = _dateSelected;
     
@@ -328,16 +328,19 @@
     NSDateComponents *offsetComponents = [[NSDateComponents alloc] init];
     
     // offset by a month
-    offsetComponents.month = (NSInteger)(self.collectionView.contentOffset.x / self.collectionView.frame.size.width);
+    offsetComponents.month = self.cellDisplayedIndex;
     
 
     
     return [_calendar dateByAddingComponents:offsetComponents toDate:_startDateCache options:0];
 }
 
-
-
 - (void) setMonthDisplayed:(NSDate *)monthDisplayed
+{
+    [self setMonthDisplayed:monthDisplayed animated:NO];
+    
+}
+- (void)setMonthDisplayed:(NSDate *)monthDisplayed animated:(BOOL)animated
 {
     
     if(!self.monthDisplayed)
@@ -361,14 +364,17 @@
                                                             toDate:monthDisplayed
                                                            options:0];
     
+    if(differenceComponents.month != self.cellDisplayedIndex)
+    {
+        CGRect rectToScroll = CGRectZero;
+        rectToScroll.size = self.collectionView.bounds.size;
+        rectToScroll.origin.x = differenceComponents.month * self.collectionView.bounds.size.width;
+        
+        _manualScroll = YES;
+        [self.collectionView scrollRectToVisible:rectToScroll
+                                        animated:animated];
+    }
     
-    CGRect rectToScroll = CGRectZero;
-    rectToScroll.size = self.collectionView.bounds.size;
-    rectToScroll.origin.x = differenceComponents.month * self.collectionView.bounds.size.width;
-    
-    _manualScroll = YES;
-    [self.collectionView scrollRectToVisible:rectToScroll
-                                    animated:YES];
 }
 
 - (void) setDateSelected:(NSDate *)dateSelected
@@ -390,5 +396,13 @@
     }
     
 }
+
+#pragma mark - Utility Methods
+
+-(NSUInteger)cellDisplayedIndex
+{
+    return (NSInteger)(self.collectionView.contentOffset.x / self.collectionView.frame.size.width);
+}
+
 
 @end

@@ -28,6 +28,9 @@
 
 @property (weak, nonatomic) IBOutlet UIView *bottomContainer;
 
+@property (weak, nonatomic) IBOutlet UIButton *previousMonthButton;
+@property (weak, nonatomic) IBOutlet UIButton *nextMonthButton;
+
 @end
 
 @implementation ViewController
@@ -179,6 +182,8 @@
     NSDateFormatter* headerFormatter = [[NSDateFormatter alloc] init];
     headerFormatter.dateFormat = @"MMMM, yyyy";
     self.monthDisplayedDayLabel.text = [headerFormatter stringFromDate:date];
+    
+    [self enableButtons:YES];
 }
 
 
@@ -247,18 +252,34 @@
 
 #pragma mark - Stepping Months and Selecting Dates
 
-- (IBAction)nextMonthPressed:(id)sender
+- (IBAction)nextMonthPressed:(UIButton*)sender
 {
+    
     [self stepMonthInCalendarByValue:1];
 }
 
-- (IBAction)previousMonthPressed:(id)sender
+- (IBAction)previousMonthPressed:(UIButton*)sender
 {
+    
     [self stepMonthInCalendarByValue:-1];
+}
+
+-(void)enableButtons:(BOOL)enable
+{
+    
+    for (UIButton* button in @[self.previousMonthButton, self.nextMonthButton])
+    {
+     
+        button.enabled = enable;
+        
+    }
 }
 
 - (void)stepMonthInCalendarByValue:(NSInteger)value
 {
+    
+    
+    [self enableButtons:NO];
     
     NSCalendar* calendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSCalendarIdentifierGregorian];
     
@@ -268,7 +289,7 @@
     NSDate* monthDisplayed = self.calendarView.monthDisplayed;
     NSDate* oneMonthLaterDate = [calendar dateByAddingComponents:oneMonthAheadDateComponents toDate:monthDisplayed options:0];
     
-    self.calendarView.monthDisplayed = oneMonthLaterDate;
+    [self.calendarView setMonthDisplayed:oneMonthLaterDate animated:YES];
 }
 
 - (IBAction)selectPressed:(UIButton *)sender {

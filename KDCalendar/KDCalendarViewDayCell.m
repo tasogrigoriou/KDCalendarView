@@ -85,9 +85,20 @@
 -(void)setIsCurrentMonth:(BOOL)isCurrentMonth
 {
     _isCurrentMonth = isCurrentMonth;
-    if (!_isCurrentMonth)
+    if (_isCurrentMonth)
     {
+        _todayMarkView.backgroundColor = [UIColor redColor];
+        self.label.textColor = [UIColor darkGrayColor];
+    }
+    else
+    {
+        _todayMarkView.backgroundColor = [UIColor lightGrayColor];
         self.label.textColor = [UIColor lightGrayColor];
+    }
+    
+    if(_isDaySelected)
+    {
+        self.label.textColor = [UIColor whiteColor];
     }
     
 }
@@ -109,6 +120,7 @@
     {
         _todayMarkView.hidden = YES;
     }
+    
 }
 
 - (void) setIsDaySelected:(BOOL)isDaySelected

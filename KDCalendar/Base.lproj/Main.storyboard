@@ -171,7 +171,9 @@
                         <outlet property="calendarView" destination="t51-gK-ua8" id="Hc0-Cv-3DF"/>
                         <outlet property="inputTextField" destination="6KX-nn-U2d" id="VO8-lO-3r7"/>
                         <outlet property="monthDisplayedDayLabel" destination="dQa-db-sGW" id="dvH-M7-mlJ"/>
+                        <outlet property="nextMonthButton" destination="Yap-LD-S2L" id="DfZ-qf-vZK"/>
                         <outlet property="overlayView" destination="xqh-0A-m7h" id="VTi-yn-WCG"/>
+                        <outlet property="previousMonthButton" destination="igZ-QU-maX" id="piB-B5-w0l"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="x5A-6p-PRh" sceneMemberID="firstResponder"/>

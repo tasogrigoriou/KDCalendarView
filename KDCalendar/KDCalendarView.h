@@ -23,6 +23,7 @@
 @property (nonatomic, weak) id<KDCalendarDataSource> dataSource;
 
 - (void) setDateSelected:(NSDate *)dateSelected animated:(BOOL)animated;
+- (void)setMonthDisplayed:(NSDate *)monthDisplayed animated:(BOOL)animated;
 
 @end
 

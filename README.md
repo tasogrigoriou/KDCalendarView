@@ -4,7 +4,7 @@ KDCalendarView
 Basic Implementation of a Calendar
 
 
-![KDGradientView Sample PNG](http://s18.postimg.org/55wgwztgp/calendar.png)
+![KDGradientView Sample PNG](http://s23.postimg.org/5dtufcwuj/screenshot.png)
 
 ### Basic Use
 Create a UIViewController that implementes the KDCalendarDelegate and KDCalendarDataSource and then create the calendar as below:

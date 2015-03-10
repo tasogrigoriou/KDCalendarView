@@ -10,6 +10,7 @@
 #import "KDCalendarHeaderView.h"
 #import "KDCalendarViewDayCell.h"
 #import "KDMonthCollectionViewFlowLayout.h"
+#import <EventKit/EventKit.h>
 
 @interface KDCalendarViewMonthCell () <UICollectionViewDataSource, UICollectionViewDelegate>
 {
@@ -154,9 +155,19 @@
         
     }
     
-    
     dayCell.isCurrentMonth = (indexPath.item >= _firstDayOfMonthIndex) && (indexPath.item <= _numberOfDaysInMonth + _firstDayOfMonthIndex - 1);
     
+    if(dayCell.isCurrentMonth && self.events)
+    {
+        id entry = self.events[dayDateComponens.day - 1];
+        if(entry != [NSNull null])
+        {
+            NSMutableArray* eventContainer = (NSMutableArray*)entry;
+            dayCell.events = eventContainer;
+            
+        }
+        
+    }
     
     return dayCell;
 }

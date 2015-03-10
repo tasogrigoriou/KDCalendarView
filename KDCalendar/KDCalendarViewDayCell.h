@@ -12,13 +12,16 @@
 {
     UIView* _selectedMarkView;
     UIView* _todayMarkView;
+    UIView* _eventsMarksView;
 }
 
 @property (nonatomic, strong) UILabel* label;
-@property (nonatomic) BOOL hasEvent;
 @property (nonatomic) BOOL isToday;
 @property (nonatomic) BOOL isCurrentMonth;
 @property (nonatomic) BOOL isDaySelected;
+
+
+@property (nonatomic, weak) NSArray* events;
 
 @property (nonatomic, strong) NSDate* date;
 

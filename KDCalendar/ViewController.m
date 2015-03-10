@@ -48,8 +48,9 @@
     self.calendarView.delegate = self;
     self.calendarView.dataSource = self;
     
-    self.calendarView.layer.borderWidth = 1.0;
-    self.calendarView.layer.borderColor = [UIColor colorWithWhite:0.8 alpha:1.0].CGColor;
+    self.calendarView.showsEvents = YES;
+    
+    
     
     self.overlayView.userInteractionEnabled = NO;
     

@@ -14,6 +14,8 @@
 @property (nonatomic, copy) NSDate* dateSelected;
 @property (nonatomic, strong) UICollectionView* collectionView;
 
+@property (nonatomic, weak) NSArray* events;
+
 @property (nonatomic, weak) id<UICollectionViewDelegate> delegate;
 
 @end

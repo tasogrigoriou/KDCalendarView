@@ -59,7 +59,30 @@
         
         [self addSubview:_todayMarkView];
         
-        self.isDaySelected = NO;;
+        CGFloat height = 6.0;
+        CGFloat width = self.frame.size.height - 6.0;
+        _eventsMarksView = [[UIView alloc] initWithFrame:CGRectMake(6.0f, 6.0f, width, height)];
+        _eventsMarksView.backgroundColor = [UIColor clearColor];
+        
+        CGFloat xpos = 0.0f;
+        
+        CGFloat third = width / 3.0;
+        for (int i = 0; i < 3; i++)
+        {
+            UIView* eventCircleView = [[UIView alloc] initWithFrame:CGRectMake(xpos, 0.0, height, height)];
+            eventCircleView.layer.cornerRadius = height * 0.5;
+            eventCircleView.clipsToBounds = YES;
+            eventCircleView.tag = 100 + i;
+            eventCircleView.backgroundColor = [UIColor clearColor];
+            xpos += third;
+            
+            [_eventsMarksView addSubview:eventCircleView];
+        }
+        
+        [self addSubview:_eventsMarksView];
+        
+        
+        self.isDaySelected = NO;
         
         
     }
@@ -69,16 +92,15 @@
 #pragma mark - Accessors
 
 // suport for later synch with iOS calendar
--(void)setHasEvent:(BOOL)hasEvent
+
+-(void)setEvents:(NSArray *)events
 {
-    _hasEvent = hasEvent;
-    if (_hasEvent)
+    _events = events;
+    
+    for (int i = 0; i < _events.count; i++)
     {
-        
-    }
-    else
-    {
-        
+        UIView* circleEventView = [_eventsMarksView viewWithTag:(100 + i)];
+        circleEventView.backgroundColor = [UIColor blueColor];
     }
 }
 
@@ -106,6 +128,13 @@
 -(void)prepareForReuse
 {
     [super prepareForReuse];
+    
+    for (UIView* circleEventMark in _eventsMarksView.subviews)
+    {
+        circleEventMark.backgroundColor = [UIColor clearColor];
+        
+    }
+    
 }
 
 -(void)setIsToday:(BOOL)isToday

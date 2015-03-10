@@ -8,8 +8,10 @@
 
 #import "KDCalendarView.h"
 #import "KDCalendarViewDayCell.h"
+#import <EventKit/EventKit.h>
 
 #define DEFAULT_NUMBER_OF_MONTHS 24
+#define MAX_NUMBER_OF_DAYS_IN_MONTH 31
 
 @interface KDCalendarView () <UICollectionViewDataSource, UICollectionViewDelegate>
 {
@@ -17,11 +19,14 @@
     NSDate *_startDateCache;
     NSDate *_endDateCache;
     BOOL _manualScroll;
+    EKEventStore *_store;
+    
 }
 
 @property (nonatomic, readonly) KDCalendarViewMonthCell* currentMonthCell;
 @property (nonatomic, readonly) NSInteger monthIndex;
 @property (nonatomic, strong) UICollectionView* collectionView;
+@property (nonatomic, strong) NSArray *events;
 
 @property (nonatomic, readonly) NSUInteger cellDisplayedIndex;
 
@@ -73,6 +78,9 @@
     self.collectionView.showsHorizontalScrollIndicator = NO;
     self.collectionView.showsVerticalScrollIndicator = NO;
     
+    self.layer.borderWidth = 1.0;
+    self.layer.borderColor = [UIColor colorWithWhite:0.8 alpha:1.0].CGColor;
+    
     
     self.collectionView.dataSource = self;
     self.collectionView.delegate = self;
@@ -84,6 +92,8 @@
     
     
     [self addSubview:self.collectionView];
+    
+    // Events
     
     
 }
@@ -108,7 +118,18 @@
         {
             _endDateCache = self.dataSource.endDate;
         }
-        
+        else
+        {
+            NSDateComponents *offsetComponents = [[NSDateComponents alloc] init];
+            
+            
+            offsetComponents.month = DEFAULT_NUMBER_OF_MONTHS;
+            
+            _endDateCache = [_calendar dateByAddingComponents:offsetComponents
+                                                       toDate:_startDateCache
+                                                      options:0];
+            
+        }
         
         
     }
@@ -116,6 +137,8 @@
     // If the method did not return nil we can have a calendar
     return _startDateCache ? 1 : 0;
 }
+
+
 
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section
 {
@@ -126,25 +149,15 @@
                          didScrollToMonth:self.dataSource.startDate];
     }
     
+    if(self.showsEvents)
+    {
+        [self loadEventsInCalendar];
+    }
     
-    if(_endDateCache)
-    {
-        
-        
-        
-        return [_calendar components:NSCalendarUnitMonth
-                            fromDate:_startDateCache
-                              toDate:_endDateCache
-                             options:0].month;
-        
-
-    }
-    else
-    {
-        // note: Setting it to large numbers like INT_MAX will result in a lot of overhead while launching the view
-        // this is due to [UICollectionViewFlowLayout _getSizingInfos] running for all cells at launch
-        return DEFAULT_NUMBER_OF_MONTHS;
-    }
+    return [_calendar components:NSCalendarUnitMonth
+                        fromDate:_startDateCache
+                          toDate:_endDateCache
+                         options:0].month;
     
     
 }
@@ -170,8 +183,11 @@
     
     monthCell.dateSelected = self.dateSelected;
     
-    // * This will capture all the date as well as day selections in one place
-    //monthCell.collectionView.delegate = self;
+
+    if(_events)
+    {
+        monthCell.events = _events[indexPath.item];
+    }
     
     return monthCell;
 }
@@ -408,6 +424,105 @@
 -(NSUInteger)cellDisplayedIndex
 {
     return (NSInteger)(self.collectionView.contentOffset.x / self.collectionView.frame.size.width);
+}
+
+- (void) setShowsEvents:(BOOL)showsEvents
+{
+    
+    if(showsEvents && _startDateCache) // if we set to YES and the view has fetched the dates from the delegates
+    {
+        [self loadEventsInCalendar];
+        
+        
+    }
+    
+    _showsEvents = showsEvents;
+}
+
+
+- (void) loadEventsInCalendar
+{
+    
+    if(!_store)
+    {
+        _store = [[EKEventStore alloc] init];
+    }
+    
+    void(^FetchEventsBlock)(void) = ^{
+        
+        NSPredicate *predicate = [_store predicateForEventsWithStartDate:_startDateCache
+                                                                 endDate:_endDateCache
+                                                               calendars:nil];
+        
+        NSArray* eventsArray = [_store eventsMatchingPredicate:predicate];
+        
+        
+        // Process Events
+        
+        NSInteger numberOfItems = [self collectionView:self.collectionView numberOfItemsInSection:0];
+        
+        NSMutableArray* eventsByMonth = [NSMutableArray arrayWithCapacity:numberOfItems];
+        
+        for (int i = 0; i < numberOfItems; i++)
+        {
+            NSMutableArray* eventsByDay = [NSMutableArray arrayWithCapacity:MAX_NUMBER_OF_DAYS_IN_MONTH];
+            for (int j = 0; j < MAX_NUMBER_OF_DAYS_IN_MONTH; j++)
+            {
+                NSMutableArray* eventsContainer = [NSMutableArray array];
+                [eventsByDay addObject:eventsContainer];
+            }
+            [eventsByMonth addObject:eventsByDay];
+         
+        }
+        
+        for (EKEvent* event in eventsArray)
+        {
+          
+            NSDateComponents *components = [_calendar components:NSCalendarUnitMonth | NSCalendarUnitDay fromDate:_startDateCache toDate:event.startDate options:0];
+            
+            NSMutableArray* monthMutableArray = (NSMutableArray*)eventsByMonth[components.month];
+            
+            NSMutableArray* eventsContainer = (NSMutableArray*)monthMutableArray[components.day];
+            
+            [eventsContainer addObject:event];
+        }
+        
+        self.events = [NSArray arrayWithArray:eventsByMonth];
+        
+        __weak KDCalendarView* wself = self;
+        
+        dispatch_async(dispatch_get_main_queue(), ^{
+            
+            [wself.collectionView reloadData];
+            
+        });
+        
+        
+        
+        
+    };
+    
+    
+    if([EKEventStore authorizationStatusForEntityType:EKEntityTypeEvent] != EKAuthorizationStatusAuthorized)
+    {
+        [_store requestAccessToEntityType:EKEntityTypeEvent
+                               completion:^(BOOL granted, NSError *error) {
+            
+                                   if(granted) {
+                
+                                       dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), FetchEventsBlock);
+                
+                                   }
+            
+            
+                               }];
+    }
+    else
+    {
+        dispatch_async(dispatch_get_global_queue(0, 0), FetchEventsBlock);
+    }
+    
+    
 }
 
 

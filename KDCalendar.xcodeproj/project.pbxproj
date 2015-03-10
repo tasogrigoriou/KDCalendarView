@@ -18,6 +18,7 @@
 		BE82A78A1A8F76470018B62A /* KDCalendarViewMonthCell.m in Sources */ = {isa = PBXBuildFile; fileRef = BE82A7891A8F76470018B62A /* KDCalendarViewMonthCell.m */; };
 		BE82A78E1A8F78040018B62A /* KDCalendarHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = BE82A78D1A8F78040018B62A /* KDCalendarHeaderView.m */; };
 		BE82A7911A8F79940018B62A /* KDCalendarViewDayCell.m in Sources */ = {isa = PBXBuildFile; fileRef = BE82A7901A8F79940018B62A /* KDCalendarViewDayCell.m */; };
+		BEC293EA1AAEF8DD0061C824 /* EventKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BEC293E91AAEF8DD0061C824 /* EventKit.framework */; };
 		BEC3EB341AA8A75F006A179A /* KDMonthCollectionViewFlowLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = BEC3EB331AA8A75F006A179A /* KDMonthCollectionViewFlowLayout.m */; };
 		BEC3EB371AA8AB73006A179A /* KDCalendarLineReusableView.m in Sources */ = {isa = PBXBuildFile; fileRef = BEC3EB361AA8AB73006A179A /* KDCalendarLineReusableView.m */; };
 /* End PBXBuildFile section */
@@ -54,6 +55,7 @@
 		BE82A78D1A8F78040018B62A /* KDCalendarHeaderView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KDCalendarHeaderView.m; sourceTree = "<group>"; };
 		BE82A78F1A8F79940018B62A /* KDCalendarViewDayCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KDCalendarViewDayCell.h; sourceTree = "<group>"; };
 		BE82A7901A8F79940018B62A /* KDCalendarViewDayCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KDCalendarViewDayCell.m; sourceTree = "<group>"; };
+		BEC293E91AAEF8DD0061C824 /* EventKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = EventKit.framework; path = System/Library/Frameworks/EventKit.framework; sourceTree = SDKROOT; };
 		BEC3EB321AA8A75F006A179A /* KDMonthCollectionViewFlowLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KDMonthCollectionViewFlowLayout.h; sourceTree = "<group>"; };
 		BEC3EB331AA8A75F006A179A /* KDMonthCollectionViewFlowLayout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KDMonthCollectionViewFlowLayout.m; sourceTree = "<group>"; };
 		BEC3EB351AA8AB73006A179A /* KDCalendarLineReusableView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KDCalendarLineReusableView.h; sourceTree = "<group>"; };
@@ -65,6 +67,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BEC293EA1AAEF8DD0061C824 /* EventKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -81,6 +84,7 @@
 		BE82A74F1A8F70730018B62A = {
 			isa = PBXGroup;
 			children = (
+				BEC293E91AAEF8DD0061C824 /* EventKit.framework */,
 				BE82A75A1A8F70730018B62A /* KDCalendar */,
 				BE82A7741A8F70730018B62A /* KDCalendarTests */,
 				BE82A7591A8F70730018B62A /* Products */,

@@ -17,9 +17,16 @@ Create a UIViewController that implementes the KDCalendarDelegate and KDCalendar
 KDCalendarView* calendarView = [[KDCalendarView alloc] initWithFrame:calendarFrame];
 calendarView.delegate = self;
 calendarView.dataSource = self;
+
 [self.view addSubview:calendarView]
 ```
-The frame can be arbitrary and the component will morph to fit in the shape it is given
+The frame can be arbitrary and the component will morph to fit in the shape it is given.
+
+To show events added from your iOS calendar add:
+
+```sh
+calendarView.showsEvents = YES;
+```
 
 ### Data Source and Delegate
 The calendar will call on 2 interfaces. 

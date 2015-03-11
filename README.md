@@ -58,3 +58,7 @@ You can choose whether the days difference from the start of the first month and
 self.calendarView.showsWholeMonthsOnStartAndEnd = YES;
 ```
 
+### Design Philosophy
+
+I chose to not use a UIViewController by mimicking the implementation of UITableView and UICollectionView which internally cache a lot of data about what and how it should appear. They use a delegate to get live data which in the case of the calendar is the start and end date, not the days in a spacific month, which although data are universal constants rather than variables.
+

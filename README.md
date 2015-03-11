@@ -43,11 +43,18 @@ The calendar will call on 2 interfaces.
 
 You can either set a date directly or scroll to the month you want if it is within the interval of start and end dates provided by the DataSource. The methods are: 'setMonthDisplayed:animated:' and 'setDateSelected:animated:'
 Example of setting the calendar to scroll to the next month:
+
 ```sh
 NSDateComponents* components = [[NSDateComponents alloc] init];
 components.month = value;
 NSDate* cdate = self.calendarView.monthDisplayed;
 NSDate* date = [calendar dateByAddingComponents:components toDate:cdate options:0];
 [self.calendarView setMonthDisplayed:date animated:YES];
+```
+
+You can choose whether the days difference from the start of the first month and the end of the last will display grayed out or not by setting
+
+```sh
+self.calendarView.showsWholeMonthsOnStartAndEnd = YES;
 ```
 

@@ -12,10 +12,15 @@
 
 @property (nonatomic, copy) NSDate* displayMonthDate;
 @property (nonatomic, copy) NSDate* dateSelected;
+
+@property (nonatomic) NSInteger firstDayActive;
+@property (nonatomic) NSInteger lastDayActive;
+
 @property (nonatomic, strong) UICollectionView* collectionView;
 
 @property (nonatomic, weak) NSArray* events;
 
 @property (nonatomic, weak) id<UICollectionViewDelegate> delegate;
+
 
 @end

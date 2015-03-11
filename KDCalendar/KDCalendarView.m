@@ -18,8 +18,14 @@
     NSCalendar *_calendar;
     NSDate *_startDateCache;
     NSDate *_endDateCache;
+    NSDate *_startOfMonthCache;
     BOOL _manualScroll;
     EKEventStore *_store;
+    
+    NSInteger _numberOfItemsInSectionCache;
+    
+    NSInteger _firstDayActive;
+    NSInteger _lastDayActive;
     
 }
 
@@ -112,6 +118,14 @@
         
         _startDateCache = self.dataSource.startDate;
         
+        // * Get the start of the first month and set it as the base date
+        NSDateComponents *components = [_calendar components:(NSCalendarUnitYear | NSCalendarUnitMonth | NSCalendarUnitDay)
+                                                    fromDate:_startDateCache];
+        components.day = 1;
+        
+        _startOfMonthCache = [_calendar dateFromComponents:components];
+        
+        
         // complaining about undeclared selector
         #pragma GCC diagnostic ignored "-Wundeclared-selector"
         if([self.dataSource respondsToSelector:@selector(endDate)])
@@ -125,11 +139,30 @@
             
             offsetComponents.month = DEFAULT_NUMBER_OF_MONTHS;
             
+            // Set the end date as the last day of that month
+            offsetComponents.month += 1;
+            offsetComponents.day = 0;
+            
             _endDateCache = [_calendar dateByAddingComponents:offsetComponents
                                                        toDate:_startDateCache
                                                       options:0];
             
         }
+        
+        if(!self.showsWholeMonthsOnStartAndEnd) // if we select NOT to show all the days of the first and last month (default) we must calculate the difference and cache it.
+        {
+            _firstDayActive = [_calendar component:NSCalendarUnitDay
+                                          fromDate:_startDateCache];
+            
+            _lastDayActive = [_calendar component:NSCalendarUnitDay
+                                         fromDate:_endDateCache];
+        }
+        else
+        {
+            _firstDayActive = 0;
+            _lastDayActive = 0;
+        }
+        
         
         
     }
@@ -154,10 +187,13 @@
         [self loadEventsInCalendar];
     }
     
-    return [_calendar components:NSCalendarUnitMonth
-                        fromDate:_startDateCache
-                          toDate:_endDateCache
-                         options:0].month;
+    _numberOfItemsInSectionCache = [_calendar components:NSCalendarUnitMonth
+                                                fromDate:_startDateCache
+                                                  toDate:_endDateCache
+                                                 options:0].month;
+    
+    
+    return _numberOfItemsInSectionCache;
     
     
 }
@@ -175,9 +211,18 @@
     // offset by a month
     offsetComponents.month = indexPath.item;
     
+    
+    
     monthCell.displayMonthDate = [_calendar dateByAddingComponents:offsetComponents
-                                                            toDate:_startDateCache
+                                                            toDate:_startOfMonthCache
                                                            options:0];
+    
+    
+    monthCell.firstDayActive = indexPath.item == 0 ? _firstDayActive : 0; // if it is the first cell then it might have an offset to its start
+    
+    monthCell.lastDayActive = indexPath.item == (_numberOfItemsInSectionCache - 1) ? _lastDayActive : 31; // if it is the last cell it might not finish at the end, otheriwe set it to the largest number possible
+    
+    
     
     monthCell.delegate = self;
     

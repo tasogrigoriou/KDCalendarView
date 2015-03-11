@@ -14,17 +14,21 @@
 
 @interface KDCalendarViewMonthCell () <UICollectionViewDataSource, UICollectionViewDelegate>
 {
-    NSInteger _firstDayOfMonthIndex;
+    NSInteger _firstWeekdayOfMonthIndex;
     NSInteger _numberOfDaysInMonth;
     NSDateComponents* _monthComponents;
-    NSCalendar *_calendar;
+    
     NSDateComponents *_todayDateComponents;
+    NSCalendar *_calendar;
+    
+    
 }
-
+@property (nonatomic, readonly) NSCalendar *calendar;
 
 @end
 
 @implementation KDCalendarViewMonthCell
+
 
 - (id)initWithFrame:(CGRect)frame
 {
@@ -80,7 +84,7 @@
     }
     
     
-    NSInteger numberOfDaysPlusOffset = _numberOfDaysInMonth + _firstDayOfMonthIndex;
+    NSInteger numberOfDaysPlusOffset = _numberOfDaysInMonth + _firstWeekdayOfMonthIndex;
     NSInteger remainingDaysToFillCalendar = 7 - (numberOfDaysPlusOffset % 7);
     return numberOfDaysPlusOffset + remainingDaysToFillCalendar;
 }
@@ -120,7 +124,7 @@
     NSDateComponents *offsetComponents = [[NSDateComponents alloc] init];
     offsetComponents.day = 0; // zero out the day (is is a stack variable)
     offsetComponents.day -= _monthComponents.day - 1; // take the date back to the first day of the month
-    offsetComponents.day -= _firstDayOfMonthIndex; // make room for the days of the previous month (ex. If the first day of the month is a Tue then we need 2 slots)
+    offsetComponents.day -= _firstWeekdayOfMonthIndex; // make room for the days of the previous month (ex. If the first day of the month is a Tue then we need 2 slots)
     offsetComponents.day += indexPath.item; // add the day offset corresponding to the cell about to be drawn
     
     NSDate* dayCellDate = [_calendar dateByAddingComponents:offsetComponents
@@ -149,13 +153,21 @@
         if(selectedDateComponens.year == dayDateComponens.year && selectedDateComponens.month == dayDateComponens.month)
         {
             
-            dayCell.isDaySelected = (BOOL)(indexPath.item == selectedDateComponens.day + _firstDayOfMonthIndex - 1);
+            dayCell.isDaySelected = (BOOL)(indexPath.item == selectedDateComponens.day + _firstWeekdayOfMonthIndex - 1);
         }
         
         
     }
     
-    dayCell.isCurrentMonth = (indexPath.item >= _firstDayOfMonthIndex) && (indexPath.item <= _numberOfDaysInMonth + _firstDayOfMonthIndex - 1);
+    BOOL shouldDisplayAsActive = YES;
+    shouldDisplayAsActive &= indexPath.item >= _firstDayActive && indexPath.item <= _lastDayActive; // is between the start and the end date
+    shouldDisplayAsActive &= indexPath.item >= _firstWeekdayOfMonthIndex; // is at or after the first weekday of the month
+    shouldDisplayAsActive &= indexPath.item <= _numberOfDaysInMonth + _firstWeekdayOfMonthIndex - 1; //
+    
+    
+    dayCell.isCurrentMonth = shouldDisplayAsActive;
+
+    
     
     if(dayCell.isCurrentMonth && self.events)
     {
@@ -217,39 +229,44 @@
 -(void)setDisplayMonthDate:(NSDate *)monthDate
 {
     
-    if(!_calendar)
-    {
-        _calendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSCalendarIdentifierGregorian];
-    }
-    
+   
     // Precalculate values below...
     
     _displayMonthDate = monthDate;
     
     NSCalendarUnit calendarUnit = NSCalendarUnitYear | NSCalendarUnitMonth | NSCalendarUnitDay;
     
-    _monthComponents = [_calendar components:calendarUnit
-                                    fromDate:_displayMonthDate];
+    _monthComponents = [self.calendar components:calendarUnit
+                                        fromDate:_displayMonthDate];
     
     
     
     NSDateComponents* firstOfTheMonthComponents = [_monthComponents copy];
     firstOfTheMonthComponents.day = 1;
-    NSDate* dateFromComponents = [_calendar dateFromComponents:firstOfTheMonthComponents];
+    NSDate* dateFromComponents = [self.calendar dateFromComponents:firstOfTheMonthComponents];
     
-    _firstDayOfMonthIndex = [_calendar component:NSCalendarUnitWeekday
-                                        fromDate:dateFromComponents] - 1; // zero indexed
+    _firstWeekdayOfMonthIndex = [self.calendar component:NSCalendarUnitWeekday
+                                        fromDate:dateFromComponents] - 1; // _firstDayOfMonthIndex should be zero indexed
     
-    _numberOfDaysInMonth = [_calendar rangeOfUnit:NSCalendarUnitDay
+    _numberOfDaysInMonth = [self.calendar rangeOfUnit:NSCalendarUnitDay
                                            inUnit:NSCalendarUnitMonth
                                           forDate:_displayMonthDate].length;
     
-    _todayDateComponents = [_calendar components:calendarUnit
+    _todayDateComponents = [self.calendar components:calendarUnit
                                         fromDate:[NSDate date]];
     
     
     [self.collectionView reloadData];
     
+}
+
+-(NSCalendar*)calendar
+{
+    if(!_calendar)
+    {
+        _calendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSCalendarIdentifierGregorian];
+    }
+    return _calendar;
 }
 
 -(void)setDateSelected:(NSDate *)dateSelected

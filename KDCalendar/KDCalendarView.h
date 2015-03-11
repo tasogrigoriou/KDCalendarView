@@ -17,9 +17,12 @@
 
 
 @property (nonatomic, strong) NSDate* dateSelected;
-@property (nonatomic, strong) NSDate* monthDisplayed;
+@property (nonatomic, strong) NSDate* monthDisplayed; // a date representing the first of the month
+
+
 
 @property (nonatomic) BOOL showsEvents;
+@property (nonatomic) BOOL showsWholeMonthsOnStartAndEnd;
 
 @property (nonatomic, weak) id<KDCalendarDelegate> delegate;
 @property (nonatomic, weak) id<KDCalendarDataSource> dataSource;

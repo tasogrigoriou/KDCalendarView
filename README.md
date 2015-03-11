@@ -1,7 +1,7 @@
 KDCalendarView
 ==============
 
-Basic Implementation of a Calendar
+Basic Implementation of a Calendar with EventKit read capabilities.
 
 
 ![KDGradientView Sample PNG](http://s23.postimg.org/5dtufcwuj/screenshot.png)

@@ -13,7 +13,7 @@ Basic Implementation of a Calendar with EventKit read capabilities.
 
 ### Basic Use
 Create a UIViewController that implementes the KDCalendarDelegate and KDCalendarDataSource and then create the calendar as below:
-```sh
+```objective-c
 KDCalendarView* calendarView = [[KDCalendarView alloc] initWithFrame:calendarFrame];
 calendarView.delegate = self;
 calendarView.dataSource = self;
@@ -24,7 +24,7 @@ The frame can be arbitrary and the component will morph to fit in the shape it i
 
 To show events added from your iOS calendar add:
 
-```sh
+```objective-c
 calendarView.showsEvents = YES;
 ```
 
@@ -32,7 +32,7 @@ calendarView.showsEvents = YES;
 The calendar will call on 2 interfaces. 
 
 **KDCalendarDataSource** needs to implement at least the first method that returns the start date. Feel free to set this at today as below:
-```sh
+```objective-c
 -(NSDate*)startDate {
   return [NSDate date];
 }

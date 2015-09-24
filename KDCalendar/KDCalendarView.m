@@ -474,7 +474,7 @@
 - (void) setShowsEvents:(BOOL)showsEvents
 {
     
-    if(showsEvents && _startDateCache) // if we set to YES and the view has fetched the dates from the delegates
+    if(showsEvents && !_showsEvents &&  _startDateCache) // if we set to YES and the view has fetched the dates from the delegates
     {
         [self loadEventsInCalendar];
         

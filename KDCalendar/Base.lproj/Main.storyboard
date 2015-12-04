@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6254" systemVersion="14B25" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="vXZ-lx-hvc">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="9060" systemVersion="15B42" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="vXZ-lx-hvc">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6247"/>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9051"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
     <scenes>
@@ -19,10 +20,12 @@
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="xqh-0A-m7h" userLabel="Overlay View (Will Bring to Front)">
                                 <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
+                                <animations/>
                                 <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.10000000000000001" colorSpace="calibratedRGB"/>
                             </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="t51-gK-ua8" customClass="KDCalendarView">
                                 <rect key="frame" x="56" y="101" width="302" height="302"/>
+                                <animations/>
                                 <color key="backgroundColor" red="0.91400911873417667" green="0.90612226658808837" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="302" id="1Gm-Bc-quH"/>
@@ -31,6 +34,7 @@
                             </view>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="[Month Displayed Label]" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dQa-db-sGW" userLabel="Current Month Label">
                                 <rect key="frame" x="56" y="61" width="302" height="30"/>
+                                <animations/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="30" id="G8J-Tr-wwJ"/>
                                 </constraints>
@@ -40,6 +44,7 @@
                             </label>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="igZ-QU-maX" userLabel="Previous Month">
                                 <rect key="frame" x="56" y="424" width="135" height="30"/>
+                                <animations/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="135" id="VEb-ww-6A8"/>
                                     <constraint firstAttribute="height" constant="30" id="b21-sD-iKt"/>
@@ -55,6 +60,7 @@
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="right" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Yap-LD-S2L" userLabel="Previous Month">
                                 <rect key="frame" x="223" y="424" width="135" height="30"/>
+                                <animations/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="135" id="fN9-id-XJ6"/>
                                     <constraint firstAttribute="height" constant="30" id="i80-cu-2DY"/>
@@ -73,6 +79,7 @@
                                 <subviews>
                                     <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="format: dd.mm.yyyy, ex. 01.03.2003" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="6KX-nn-U2d">
                                         <rect key="frame" x="56" y="42" width="302" height="34"/>
+                                        <animations/>
                                         <color key="backgroundColor" red="0.96579333563535907" green="0.96579333563535907" blue="0.96579333563535907" alpha="1" colorSpace="calibratedRGB"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="34" id="DqZ-8s-fbc"/>
@@ -87,6 +94,7 @@
                                     </textField>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Date Selected (Press to Change)" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Xtb-YI-lah" userLabel="Pick a Date">
                                         <rect key="frame" x="56" y="11" width="302" height="23"/>
+                                        <animations/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="23" id="9VG-eU-hSF"/>
                                             <constraint firstAttribute="width" constant="302" id="mJ7-be-KUX"/>
@@ -97,6 +105,7 @@
                                     </label>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="jkF-B0-Pm4">
                                         <rect key="frame" x="56" y="79" width="114" height="30"/>
+                                        <animations/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="30" id="1cR-e5-gRh"/>
                                             <constraint firstAttribute="width" constant="114" id="5VN-LV-T5B"/>
@@ -112,6 +121,7 @@
                                     </button>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="8r6-XR-5ZX" userLabel="Separator">
                                         <rect key="frame" x="0.0" y="0.0" width="414" height="2"/>
+                                        <animations/>
                                         <color key="backgroundColor" red="0.9434780732044199" green="0.9434780732044199" blue="0.9434780732044199" alpha="1" colorSpace="calibratedRGB"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="2" id="Dhy-qU-wK0"/>
@@ -119,12 +129,14 @@
                                     </view>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="B9V-ay-ycZ" userLabel="Separator">
                                         <rect key="frame" x="0.0" y="116" width="414" height="2"/>
+                                        <animations/>
                                         <color key="backgroundColor" red="0.94347807319999999" green="0.94347807319999999" blue="0.94347807319999999" alpha="1" colorSpace="calibratedRGB"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="2" id="qHh-HD-eZc"/>
                                         </constraints>
                                     </view>
                                 </subviews>
+                                <animations/>
                                 <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                 <constraints>
                                     <constraint firstItem="8r6-XR-5ZX" firstAttribute="top" secondItem="hI4-S1-WP2" secondAttribute="top" id="4fj-OE-eQX"/>
@@ -143,6 +155,7 @@
                                 </constraints>
                             </view>
                         </subviews>
+                        <animations/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstItem="dQa-db-sGW" firstAttribute="trailing" secondItem="t51-gK-ua8" secondAttribute="trailing" id="1E6-3i-VUr"/>

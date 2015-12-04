@@ -190,7 +190,7 @@
     _numberOfItemsInSectionCache = [_calendar components:NSCalendarUnitMonth
                                                 fromDate:_startDateCache
                                                   toDate:_endDateCache
-                                                 options:0].month;
+                                                 options:0].month + 1;
     
     
     return _numberOfItemsInSectionCache;

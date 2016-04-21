@@ -542,30 +542,32 @@
             
         });
         
-        
-        
-        
     };
     
     
-    if([EKEventStore authorizationStatusForEntityType:EKEntityTypeEvent] != EKAuthorizationStatusAuthorized)
-    {
-        [_store requestAccessToEntityType:EKEntityTypeEvent
-                               completion:^(BOOL granted, NSError *error) {
+    
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
+        
+        if([EKEventStore authorizationStatusForEntityType:EKEntityTypeEvent] != EKAuthorizationStatusAuthorized) {
             
-                                   if(granted) {
-                
-                                       dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), FetchEventsBlock);
-                
-                                   }
-            
-            
-                               }];
-    }
-    else
-    {
-        dispatch_async(dispatch_get_global_queue(0, 0), FetchEventsBlock);
-    }
+            [_store requestAccessToEntityType:EKEntityTypeEvent
+                                   completion:^(BOOL granted, NSError *error) {
+                                       
+                                       if(granted) {
+                                           
+                                           FetchEventsBlock();
+                                           
+                                       }
+                                       
+                                       
+                                   }];
+        }
+        else {
+            FetchEventsBlock();
+        }
+        
+    });
+    
     
     
 }

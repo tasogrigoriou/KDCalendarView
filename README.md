@@ -3,7 +3,7 @@ KDCalendarView
 
 Basic Implementation of a Calendar with EventKit read capabilities.
 
-**This repository is no longer maintained**, please look at [CalendarView](https://github.com/mmick66/CalendarView)  for an update version written inn Swift
+**This repository will not be actively maintained for much longer**, please look at [CalendarView](https://github.com/mmick66/CalendarView)  for an update version written inn Swift
 
 
 ![KDGradientView Sample PNG](http://s23.postimg.org/5dtufcwuj/screenshot.png)

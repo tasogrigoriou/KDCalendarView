@@ -159,14 +159,14 @@
         
     }
     
-    BOOL shouldDisplayAsActive = YES;
-    shouldDisplayAsActive &= indexPath.item >= _firstDayActive && indexPath.item <= _lastDayActive; // is between the start and the end date
-    shouldDisplayAsActive &= indexPath.item >= _firstWeekdayOfMonthIndex; // is at or after the first weekday of the month
-    shouldDisplayAsActive &= indexPath.item <= _numberOfDaysInMonth + _firstWeekdayOfMonthIndex - 1; //
-    
-    
-    dayCell.isCurrentMonth = shouldDisplayAsActive;
-
+    if (_firstWeekdayOfMonthIndex <= indexPath.item  && indexPath.item  < _firstWeekdayOfMonthIndex + _numberOfDaysInMonth)
+    {
+        dayCell.isCurrentMonth = YES;
+    }
+    else
+    {
+        dayCell.isCurrentMonth = NO;
+    }
     
     
     if(dayCell.isCurrentMonth && self.events)

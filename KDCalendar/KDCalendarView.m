@@ -9,6 +9,7 @@
 #import "KDCalendarView.h"
 #import "KDCalendarViewDayCell.h"
 #import <EventKit/EventKit.h>
+#import "KDCalendarViewWeekCell.h"
 
 #define DEFAULT_NUMBER_OF_MONTHS 24
 #define MAX_NUMBER_OF_DAYS_IN_MONTH 31
@@ -35,6 +36,9 @@
 @property (nonatomic, strong) NSArray *events;
 
 @property (nonatomic, readonly) NSUInteger cellDisplayedIndex;
+
+@property (nonatomic, strong) NSDate *startOfWeekCache;
+@property (nonatomic, readonly) KDCalendarViewWeekCell *currentWeekCell;
 
 @end
 
@@ -96,6 +100,9 @@
     [self.collectionView registerClass:[KDCalendarViewMonthCell class]
             forCellWithReuseIdentifier:NSStringFromClass([KDCalendarViewMonthCell class])];
     
+    [self.collectionView registerClass:[KDCalendarViewWeekCell class]
+            forCellWithReuseIdentifier:NSStringFromClass([KDCalendarViewWeekCell class])];
+    
     
     [self addSubview:self.collectionView];
     
@@ -118,12 +125,22 @@
         
         _startDateCache = self.dataSource.startDate;
         
-        // * Get the start of the first month and set it as the base date
-        NSDateComponents *components = [_calendar components:(NSCalendarUnitYear | NSCalendarUnitMonth | NSCalendarUnitDay)
+        NSDateComponents *components = [_calendar components:NSCalendarUnitYear | NSCalendarUnitMonth | NSCalendarUnitDay | NSCalendarUnitWeekOfYear
                                                     fromDate:_startDateCache];
-        components.day = 1;
         
-        _startOfMonthCache = [_calendar dateFromComponents:components];
+        switch (_scope) {
+            case KDCalendarScopeMonth: {
+                components.day = 1;
+                _startOfMonthCache = [_calendar dateFromComponents:components];
+                break;
+            }
+                
+            case KDCalendarScopeWeek: {
+                _startOfWeekCache = [_calendar dateFromComponents:components];
+                break;
+            }
+        }
+            
         
         
         // complaining about undeclared selector
@@ -178,8 +195,30 @@
     
     if(self.delegate)
     {
-        [self.delegate calendarController:self
-                         didScrollToMonth:self.dataSource.startDate];
+        switch (_scope) {
+                
+            case KDCalendarScopeMonth: {
+                [self.delegate calendarController:self
+                                 didScrollToMonth:self.dataSource.startDate];
+        
+                _numberOfItemsInSectionCache = [_calendar components:NSCalendarUnitMonth
+                                                            fromDate:_startDateCache
+                                                              toDate:_endDateCache
+                                                             options:0].month + 1;
+                break;
+            }
+                
+            case KDCalendarScopeWeek: {
+                [self.delegate calendarController:self
+                                  didScrollToWeek:self.dataSource.startDate];
+                
+                _numberOfItemsInSectionCache = [_calendar components:NSCalendarUnitWeekOfYear
+                                                            fromDate:_startDateCache
+                                                              toDate:_endDateCache
+                                                             options:0].weekOfYear + 1;
+                break;
+            }
+        }
     }
     
     if(self.showsEvents)
@@ -187,15 +226,7 @@
         [self loadEventsInCalendar];
     }
     
-    _numberOfItemsInSectionCache = [_calendar components:NSCalendarUnitMonth
-                                                fromDate:_startDateCache
-                                                  toDate:_endDateCache
-                                                 options:0].month + 1;
-    
-    
     return _numberOfItemsInSectionCache;
-    
-    
 }
 
 
@@ -203,38 +234,59 @@
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
 {
     
-    KDCalendarViewMonthCell *monthCell = (KDCalendarViewMonthCell*)[collectionView dequeueReusableCellWithReuseIdentifier: NSStringFromClass([KDCalendarViewMonthCell class])
-                                                                                                               forIndexPath: indexPath];
-    
-    NSDateComponents *offsetComponents = [[NSDateComponents alloc] init];
-    
-    // offset by a month
-    offsetComponents.month = indexPath.item;
-    
-    
-    
-    monthCell.displayMonthDate = [_calendar dateByAddingComponents:offsetComponents
-                                                            toDate:_startOfMonthCache
-                                                           options:0];
-    
-    
-    monthCell.firstDayActive = indexPath.item == 0 ? _firstDayActive : 0; // if it is the first cell then it might have an offset to its start
-    
-    monthCell.lastDayActive = indexPath.item == (_numberOfItemsInSectionCache - 1) ? _lastDayActive : 31; // if it is the last cell it might not finish at the end, otheriwe set it to the largest number possible
-    
-    
-    
-    monthCell.delegate = self;
-    
-    monthCell.dateSelected = self.dateSelected;
-    
-
-    if(_events)
-    {
-        monthCell.events = _events[indexPath.item];
+    switch (_scope) {
+            
+        case KDCalendarScopeMonth: {
+            
+            KDCalendarViewMonthCell *monthCell = (KDCalendarViewMonthCell*)[collectionView dequeueReusableCellWithReuseIdentifier: NSStringFromClass([KDCalendarViewMonthCell class]) forIndexPath: indexPath];
+            
+            NSDateComponents *offsetComponents = [[NSDateComponents alloc] init];
+            
+            // offset by a month
+            offsetComponents.month = indexPath.item;
+            
+            monthCell.displayMonthDate = [_calendar dateByAddingComponents:offsetComponents
+                                                                    toDate:_startOfMonthCache
+                                                                   options:0];
+            
+            monthCell.firstDayActive = indexPath.item == 0 ? _firstDayActive : 0; // if it is the first cell then it might have an offset to its start
+            
+            monthCell.lastDayActive = indexPath.item == (_numberOfItemsInSectionCache - 1) ? _lastDayActive : 31; // if it is the last cell it might not finish at the end, otheriwe set it to the largest number possible
+            
+            monthCell.delegate = self;
+            monthCell.dateSelected = self.dateSelected;
+            
+            if(_events)
+            {
+                monthCell.events = _events[indexPath.item];
+            }
+            
+            return monthCell;
+        }
+            
+        case KDCalendarScopeWeek: {
+            
+            KDCalendarViewWeekCell *weekCell = (KDCalendarViewWeekCell *)
+            [collectionView dequeueReusableCellWithReuseIdentifier:NSStringFromClass([KDCalendarViewWeekCell class])
+                                                      forIndexPath:indexPath];
+            
+            NSDateComponents *offsetComponents = [[NSDateComponents alloc] init];
+            offsetComponents.weekOfYear = indexPath.item;
+            
+            weekCell.displayWeekDate = [_calendar dateByAddingComponents:offsetComponents
+                                                                  toDate:_startOfWeekCache
+                                                                 options:0];
+            weekCell.delegate = self;
+            weekCell.dateSelected = self.dateSelected;
+            
+            if(_events) {
+                weekCell.events = _events[indexPath.item];
+            }
+            
+            return weekCell;
+        }
     }
-    
-    return monthCell;
+
 }
 
 
@@ -275,12 +327,13 @@
     
     KDCalendarViewDayCell* dayCell = (KDCalendarViewDayCell*)[collectionView cellForItemAtIndexPath:indexPath];
     
-    
-    if(!dayCell.isCurrentMonth) // * Cannot select grayed out dates
-    {
-        return NO;
+    if (_scope == KDCalendarScopeMonth) {
+        
+        if(!dayCell.isCurrentMonth) // * Cannot select grayed out dates
+        {
+            return NO;
+        }
     }
-    
     
     // * This is implemented in KDMeetingDatePropertyController where we check for whether the
     if([self.delegate respondsToSelector:@selector(calendarController:canSelectDate:)])
@@ -306,20 +359,42 @@
 
 -(void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView
 {
+    if (self.delegate) {
     
-    
-    // Notify the Delegate if there
-    if(self.delegate && [self.delegate respondsToSelector:@selector(calendarController:didScrollToMonth:)])
-    {
-        
-        [self.delegate calendarController:self
-                         didScrollToMonth:self.currentMonthCell.displayMonthDate];
+        switch (_scope) {
+            
+            case KDCalendarScopeMonth: {
+            
+                if ([self.delegate respondsToSelector:@selector(calendarController:didScrollToMonth:)]) {
+                    [self.delegate calendarController:self
+                                     didScrollToMonth:self.currentMonthCell.displayMonthDate];
+                }
+                break;
+            }
+            
+            case KDCalendarScopeWeek: {
+                
+                if ([self.delegate respondsToSelector:@selector(calendarController:didScrollToWeek:)]) {
+                    [self.delegate calendarController:self
+                                      didScrollToWeek:self.currentWeekCell.displayWeekDate];
+                }
+                break;
+            }
+            
+        }
     }
     
 }
 
 
 #pragma mark - Accessors
+
+
+- (void)setScope:(KDCalendarScope)scope
+{
+    _scope = scope;
+}
+
 
 - (void) setDateSelected:(NSDate *)dateSelected
                 animated:(BOOL)animated
@@ -338,19 +413,39 @@
     _dateSelected = dateSelected;
     
     
-    
-    [self setMonthDisplayed:dateSelected animated:animated];
-    
-    NSInteger month = [_calendar components:NSCalendarUnitMonth
-                                   fromDate:_startDateCache
-                                     toDate:dateSelected
-                                    options:0].month;
-    
-    KDCalendarViewMonthCell* monthCell = [self monthCellForMonthIndex:month];
-    
-    monthCell.dateSelected = _dateSelected;
-    
-    
+    switch (_scope) {
+            
+        case KDCalendarScopeMonth: {
+            
+            [self setMonthDisplayed:dateSelected animated:animated];
+            
+            NSInteger month = [_calendar components:NSCalendarUnitMonth
+                                           fromDate:_startDateCache
+                                             toDate:dateSelected
+                                            options:0].month;
+            
+            KDCalendarViewMonthCell* monthCell = [self monthCellForMonthIndex:month];
+            monthCell.dateSelected = _dateSelected;
+            
+            break;
+        }
+            
+        case KDCalendarScopeWeek: {
+            
+            [self setWeekDisplayed:dateSelected animated:animated];
+            
+            NSInteger week = [_calendar components:NSCalendarUnitWeekOfYear
+                                          fromDate:_startDateCache
+                                            toDate:dateSelected
+                                           options:0].weekOfYear;
+            
+            KDCalendarViewWeekCell *weekCell = [self weekCellForWeekIndex:week];
+            weekCell.dateSelected = _dateSelected;
+            
+            break;
+        }
+
+    }
 }
 
 
@@ -361,6 +456,12 @@
 }
 
 
+- (KDCalendarViewWeekCell *)weekCellForWeekIndex:(NSInteger)index
+{
+    NSIndexPath *indexPath = [NSIndexPath indexPathForItem:index inSection:0];
+    
+    return (KDCalendarViewWeekCell *)[self.collectionView cellForItemAtIndexPath:indexPath];
+}
 
 
 -(KDCalendarViewMonthCell*)currentMonthCell
@@ -372,6 +473,17 @@
     
 }
 
+
+- (KDCalendarViewWeekCell *)currentWeekCell
+{
+    CGFloat weekCellWidth = ((UICollectionViewFlowLayout *)self.collectionView.collectionViewLayout).itemSize.width;
+
+    CGFloat pageNumberRoundedDown = floor(self.collectionView.contentOffset.x / weekCellWidth);
+    
+    return (KDCalendarViewWeekCell *)[self.collectionView
+                                    cellForItemAtIndexPath:[NSIndexPath indexPathForItem:pageNumberRoundedDown
+                                                                               inSection:0]];
+}
 
 
 #pragma mark - Accessors
@@ -397,16 +509,39 @@
     // offset by a month
     offsetComponents.month = self.cellDisplayedIndex;
     
-
-    
     return [_calendar dateByAddingComponents:offsetComponents toDate:_startDateCache options:0];
 }
+
+
+- (NSDate *)weekDisplayed
+{
+    if (CGRectIsEmpty(self.collectionView.frame)) {
+        return nil;
+    }
+    if (!_startDateCache) {
+        return nil;
+    }
+    
+    NSDateComponents *components = [[NSDateComponents alloc] init];
+    components.weekOfYear = self.cellDisplayedIndex;
+    
+    return [_calendar dateByAddingComponents:components toDate:_startDateCache options:0];
+}
+
 
 - (void) setMonthDisplayed:(NSDate *)monthDisplayed
 {
     [self setMonthDisplayed:monthDisplayed animated:NO];
     
 }
+
+
+- (void)setWeekDisplayed:(NSDate *)weekDisplayed
+{
+    [self setWeekDisplayed:weekDisplayed animated:NO];
+}
+
+
 - (void)setMonthDisplayed:(NSDate *)monthDisplayed animated:(BOOL)animated
 {
     
@@ -438,11 +573,40 @@
         rectToScroll.origin.x = differenceComponents.month * self.collectionView.bounds.size.width;
         
         _manualScroll = YES;
-        [self.collectionView scrollRectToVisible:rectToScroll
-                                        animated:animated];
+        [self.collectionView scrollRectToVisible:rectToScroll animated:animated];
     }
     
 }
+
+
+- (void)setWeekDisplayed:(NSDate *)weekDisplayed animated:(BOOL)animated
+{
+    if (!self.weekDisplayed) {
+        return;
+    }
+    
+    if ([weekDisplayed compare:_startDateCache] == NSOrderedAscending) {
+        return;
+    } else if (_endDateCache && [weekDisplayed compare:_endDateCache] == NSOrderedDescending) {
+        return;
+    }
+    
+    NSDateComponents *differenceComponents = [_calendar components:NSCalendarUnitWeekOfYear
+                                                          fromDate:_startDateCache
+                                                            toDate:weekDisplayed
+                                                           options:0];
+    
+    if (differenceComponents.weekOfYear != self.cellDisplayedIndex) {
+        
+        CGRect rectToScroll = CGRectZero;
+        rectToScroll.size = self.collectionView.bounds.size;
+        rectToScroll.origin.x = differenceComponents.weekOfYear * self.collectionView.bounds.size.width;
+        
+        _manualScroll = YES;
+        [self.collectionView scrollRectToVisible:rectToScroll animated:animated];
+    }
+}
+
 
 - (void) setDateSelected:(NSDate *)dateSelected
 {

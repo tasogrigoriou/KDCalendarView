@@ -9,7 +9,7 @@
 #import "KDCalendarViewMonthCell.h"
 #import "KDCalendarHeaderView.h"
 #import "KDCalendarViewDayCell.h"
-#import "KDMonthCollectionViewFlowLayout.h"
+#import "KDCollectionViewFlowLayout.h"
 #import <EventKit/EventKit.h>
 
 @interface KDCalendarViewMonthCell () <UICollectionViewDataSource, UICollectionViewDelegate>
@@ -35,14 +35,13 @@
     self = [super initWithFrame:frame];
     if (self) {
         
-    
+        KDCollectionViewFlowLayout* monthFlowLayout = [[KDCollectionViewFlowLayout alloc]
+                                                       initWithCollectionViewSize:frame.size
+                                                                     headerHeight:[KDCalendarHeaderView height]
+                                                                            scope:KDCalendarScopeMonth];
         
-        KDMonthCollectionViewFlowLayout* monthFlowLayout = [[KDMonthCollectionViewFlowLayout alloc] initWithCollectionViewSize:frame.size
-                                                                                                               andHeaderHeight:[KDCalendarHeaderView height]];
         
-        
-        self.collectionView = [[UICollectionView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, frame.size.width, frame.size.height)
-                                                 collectionViewLayout:monthFlowLayout];
+        self.collectionView = [[UICollectionView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, frame.size.width, frame.size.height) collectionViewLayout:monthFlowLayout];
         
         // delegate is the parent controller
         self.collectionView.dataSource = self;

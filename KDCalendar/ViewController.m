@@ -50,6 +50,11 @@
     
     self.calendarView.showsEvents = YES;
     
+    // Specify the scope of the calendar,
+    // Can either be a monthly view or weekly view.
+    self.calendarView.scope = KDCalendarScopeWeek;
+    
+//    self.calendarView.scope = KDCalendarScopeMonth;
     
     
     self.overlayView.userInteractionEnabled = NO;
